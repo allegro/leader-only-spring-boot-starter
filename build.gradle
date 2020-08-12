@@ -1,19 +1,38 @@
 plugins {
-    // Apply the java-library plugin to add support for Java Library
     id 'java-library'
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
 }
+
+apply plugin: 'java-library'
+apply plugin: 'io.spring.dependency-management'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+    api 'org.springframework.boot:spring-boot-starter-aop'
+    api 'org.springframework.boot:spring-boot-autoconfigure'
+    api 'org.slf4j:slf4j-api:1.7.30'
+    api 'org.apache.curator:curator-recipes:4.2.0'
+    api 'org.apache.curator:curator-framework:4.2.0'
+
+    testImplementation 'org.springframework.boot:spring-boot'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
 
     // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
+
+    testCompile "org.testcontainers:testcontainers:1.14.3"
+    testImplementation "org.testcontainers:junit-jupiter:1.14.3"
+    testImplementation ("org.apache.zookeeper:zookeeper:3.4.10") {
+        force = true
+    }
 }
 
 test {

@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+pl.allegro.tech.leader.only.LeaderOnlyConfiguration,\
+pl.allegro.tech.leader.only.curator.CuratorLeadershipConfiguration
