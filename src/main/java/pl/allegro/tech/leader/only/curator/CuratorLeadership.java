@@ -1,6 +1,5 @@
 package pl.allegro.tech.leader.only.curator;
 
-import com.google.common.annotations.VisibleForTesting;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
