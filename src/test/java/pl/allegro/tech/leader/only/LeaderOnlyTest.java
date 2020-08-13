@@ -1,4 +1,4 @@
-package pl.allegro.tech.leader.only.curator;
+package pl.allegro.tech.leader.only;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -8,10 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
-import pl.allegro.tech.leader.only.Leadership;
-import pl.allegro.tech.leader.only.LeadershipFactory;
-import pl.allegro.tech.leader.only.curator.fixtures.SampleApplication;
-import pl.allegro.tech.leader.only.curator.fixtures.SampleLeaderOnlyExecutor;
+import pl.allegro.tech.leader.only.fixtures.SampleApplication;
+import pl.allegro.tech.leader.only.fixtures.SampleLeaderOnlyExecutor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;

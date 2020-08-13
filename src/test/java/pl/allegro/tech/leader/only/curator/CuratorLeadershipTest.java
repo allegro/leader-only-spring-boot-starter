@@ -8,8 +8,8 @@ import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
-import pl.allegro.tech.leader.only.curator.fixtures.SampleApplication;
-import pl.allegro.tech.leader.only.curator.fixtures.SampleLeaderOnlyExecutor;
+import pl.allegro.tech.leader.only.fixtures.SampleApplication;
+import pl.allegro.tech.leader.only.fixtures.SampleLeaderOnlyExecutor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;

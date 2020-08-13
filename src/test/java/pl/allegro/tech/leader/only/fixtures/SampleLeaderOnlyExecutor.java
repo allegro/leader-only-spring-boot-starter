@@ -1,4 +1,4 @@
-package pl.allegro.tech.leader.only.curator.fixtures;
+package pl.allegro.tech.leader.only.fixtures;
 
 import org.springframework.stereotype.Component;
 import pl.allegro.tech.leader.only.Leader;
