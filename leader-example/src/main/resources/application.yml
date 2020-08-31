@@ -1,0 +1,6 @@
+server:
+  port: 8181
+
+logging:
+  level:
+    pl.allegro.tech.leader.only: DEBUG

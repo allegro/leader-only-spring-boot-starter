@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class LeaderOnlyConfiguration {
     @Bean
-    @ConditionalOnBean(LeadershipFactory.class)
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     LeadershipProxyFactory leaderOnlyProxyFactory(LeadershipFactory leadershipFactory) {
         return new LeadershipProxyFactory(leadershipFactory);
     }

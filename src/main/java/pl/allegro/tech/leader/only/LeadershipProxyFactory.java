@@ -9,14 +9,14 @@ import java.io.Closeable;
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 
 @SuppressWarnings("unchecked")
-public class LeadershipProxyFactory {
+class LeadershipProxyFactory {
     private final LeadershipFactory leadershipFactory;
 
-    public LeadershipProxyFactory(LeadershipFactory leadershipFactory) {
+    LeadershipProxyFactory(LeadershipFactory leadershipFactory) {
         this.leadershipFactory = leadershipFactory;
     }
 
-    public <T> T getProxy(T object, String path) {
+    <T> T getProxy(T object, String path) {
         Leadership leadership = leadershipFactory.of(path);
         return (T) createProxy(object, leadership).getProxy();
     }

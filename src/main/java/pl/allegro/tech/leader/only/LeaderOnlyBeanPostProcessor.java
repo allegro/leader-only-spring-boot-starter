@@ -5,7 +5,7 @@ import org.springframework.lang.Nullable;
 
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 
-public class LeaderOnlyBeanPostProcessor implements BeanPostProcessor {
+class LeaderOnlyBeanPostProcessor implements BeanPostProcessor {
 
     private final LeadershipProxyFactory leadershipProxyFactory;
 

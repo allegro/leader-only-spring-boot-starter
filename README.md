@@ -38,6 +38,8 @@ public class Sample {
 }
 ``` 
 
+See example project [here](./leader-example).
+
 ## Configuration
 
 Zookeeper & Apache Curator are technologies that drives selecting leader.
