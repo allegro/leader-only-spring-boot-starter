@@ -1,4 +1,4 @@
-package pl.allegro.tech.leader.only;
+package pl.allegro.tech.leader.only.api;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

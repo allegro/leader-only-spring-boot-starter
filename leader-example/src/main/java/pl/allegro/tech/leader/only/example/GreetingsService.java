@@ -1,8 +1,8 @@
 package pl.allegro.tech.leader.only.example;
 
 import org.springframework.stereotype.Service;
-import pl.allegro.tech.leader.only.Leader;
-import pl.allegro.tech.leader.only.LeaderOnly;
+import pl.allegro.tech.leader.only.api.Leader;
+import pl.allegro.tech.leader.only.api.LeaderOnly;
 
 @Leader("greetings")
 @Service

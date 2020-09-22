@@ -1,4 +1,4 @@
-package pl.allegro.tech.leader.only;
+package pl.allegro.tech.leader.only.api;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;

@@ -2,6 +2,7 @@ package pl.allegro.tech.leader.only;
 
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.lang.Nullable;
+import pl.allegro.tech.leader.only.api.Leader;
 
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 

@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.allegro.tech.leader.only.LeaderOnlyConfiguration;
-import pl.allegro.tech.leader.only.LeadershipFactory;
+import pl.allegro.tech.leader.only.api.LeadershipFactory;
 
 import static org.apache.curator.framework.CuratorFrameworkFactory.builder;
 
