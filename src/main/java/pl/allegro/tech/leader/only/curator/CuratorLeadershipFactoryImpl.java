@@ -8,6 +8,8 @@ import pl.allegro.tech.leader.only.api.Leadership;
 import pl.allegro.tech.leader.only.api.LeadershipFactory;
 
 import java.io.Closeable;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.ConcurrentHashMap;
 
 final class CuratorLeadershipFactoryImpl implements LeadershipFactory, Closeable {
@@ -20,20 +22,19 @@ final class CuratorLeadershipFactoryImpl implements LeadershipFactory, Closeable
 
     public CuratorLeadershipFactoryImpl(
             CuratorFramework client,
-            String pathPrefix
+            Path pathPrefix
     ) {
         this.client = client;
-        this.prefix = pathPrefix;
+        this.prefix = pathPrefix.toString();
 
-        if (logger.isDebugEnabled()) {
-            logger.debug("Curator LeaderLatch will be served from {}", prefix);
-        }
+        logger.debug("Curator LeaderLatch will be served from {}", prefix);
     }
 
     @Override
     public Leadership of(String path) {
         if (!leaderships.containsKey(path)) {
-            final LeaderLatch latch = new LeaderLatch(client, prefix + "/" + path);
+            final String prefixedPath = Paths.get(prefix, path).toString();
+            final LeaderLatch latch = new LeaderLatch(client, prefixedPath);
             leaderships.put(path, new CuratorLeadership(latch));
         }
 

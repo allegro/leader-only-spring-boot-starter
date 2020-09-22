@@ -47,8 +47,8 @@ Zookeeper & Apache Curator are technologies that drives selecting leader.
 ```yaml
 curator-leadership:
     connection-string: localhost:2181 # only required property
-    session-timeout-ms: 100
-    connection-timeout-ms: 100
+    session-timeout: 100
+    connection-timeout: 100
     path-prefix: /leader-only
     retry:
       max-retries: 3
@@ -70,4 +70,4 @@ implementation "org.apache.zookeeper:zookeeper:3.4.10"
 ## What if you don't want to use Zookeeper?
 
 You can make your own `Leadership` implementation and add your `LeadershipFactory` bean to Spring context.
-If you want to know more, check out this [example](src/test/java/pl/allegro/tech/leader/only/LeaderOnlyTest.java).
+If you want to know more, check out this [example](src/test/java/pl/allegro/tech/leader/only/api/LeaderOnlyTest.java).

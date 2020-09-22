@@ -1,15 +1,14 @@
 package pl.allegro.tech.leader.only.curator;
 
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import pl.allegro.tech.leader.only.api.LeaderLatchCannotStartException;
+import pl.allegro.tech.leader.only.api.LeaderLatchCannotStopException;
 import pl.allegro.tech.leader.only.api.Leadership;
 
 import java.io.Closeable;
 import java.io.IOException;
 
 final class CuratorLeadership implements Leadership, Closeable {
-    private static final Logger logger = LoggerFactory.getLogger(CuratorLeadership.class);
 
     private final LeaderLatch leaderLatch;
 
@@ -19,7 +18,7 @@ final class CuratorLeadership implements Leadership, Closeable {
         try {
             leaderLatch.start();
         } catch (Exception e) {
-            logger.error("Cannot start LeaderLatch", e);
+            throw new LeaderLatchCannotStartException(e);
         }
     }
 
@@ -33,7 +32,7 @@ final class CuratorLeadership implements Leadership, Closeable {
         try {
             leaderLatch.close();
         } catch (IOException e) {
-            logger.error("Cannot close LeaderLatch", e);
+            throw new LeaderLatchCannotStopException(e);
         }
     }
 }

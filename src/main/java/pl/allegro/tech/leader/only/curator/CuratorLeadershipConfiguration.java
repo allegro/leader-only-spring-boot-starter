@@ -41,4 +41,9 @@ public class CuratorLeadershipConfiguration {
     LeadershipFactory curatorLeaderLatchFactory(CuratorFramework leaderOnlyCuratorClient, CuratorLeadershipProperties properties) {
         return new CuratorLeadershipFactoryImpl(leaderOnlyCuratorClient, properties.getPathPrefix());
     }
+
+    @Bean
+    ConnectionStringConverter connectionStringConverter() {
+        return new ConnectionStringConverter();
+    }
 }

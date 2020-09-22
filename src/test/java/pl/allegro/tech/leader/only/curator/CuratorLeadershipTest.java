@@ -28,6 +28,7 @@ class CuratorLeadershipTest {
     static void zookeeperProperties(DynamicPropertyRegistry registry) {
         registry.add("curator-leadership.connection-string", () ->
                 zookeeper.getContainerIpAddress() + ":" + zookeeper.getMappedPort(PORT));
+        registry.add("curator-leadership.path-prefix", () -> "test/path");
     }
 
     @Autowired

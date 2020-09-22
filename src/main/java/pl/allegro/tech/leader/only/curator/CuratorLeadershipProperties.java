@@ -5,43 +5,57 @@ import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.retry.RetryOneTime;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
+import org.springframework.boot.convert.DurationUnit;
+import pl.allegro.tech.leader.only.api.ConnectionStringCannotBeEmptyException;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.Duration;
 import java.util.Optional;
 
+import static java.time.temporal.ChronoUnit.MILLIS;
 import static org.springframework.util.StringUtils.hasText;
 
 @ConfigurationProperties(prefix = "curator-leadership")
 @ConstructorBinding
 class CuratorLeadershipProperties {
+    private static final Path DEFAULT_PATH = Paths.get("/leader-only");
+    private static final Path ABSOLUTE_START = Paths.get("/");
 
-    private final String connectionString;
+    private final ConnectionString connectionString;
     private final RetryPolicyProperties retry;
     private final AuthProperties auth;
-    private final Integer sessionTimeoutMs;
-    private final Integer connectionTimeoutMs;
-    private final String pathPrefix;
+    @DurationUnit(MILLIS)
+    private final Duration sessionTimeout;
+    @DurationUnit(MILLIS)
+    private final Duration connectionTimeout;
+    private final Path pathPrefix;
 
     public CuratorLeadershipProperties(
-            String connectionString,
-            String pathPrefix,
+            ConnectionString connectionString,
+            Path pathPrefix,
             RetryPolicyProperties retry,
             AuthProperties auth,
-            Integer sessionTimeoutMs,
-            Integer connectionTimeout
+            Duration sessionTimeout,
+            Duration connectionTimeout
     ) {
         this.connectionString = connectionString;
-        this.pathPrefix = Optional.ofNullable(pathPrefix).orElse("/leader-only");
+        this.pathPrefix = Optional.ofNullable(pathPrefix)
+                .map(ABSOLUTE_START::resolve)
+                .orElse(DEFAULT_PATH);
         this.retry = retry;
         this.auth = auth;
-        this.sessionTimeoutMs = sessionTimeoutMs;
-        this.connectionTimeoutMs = connectionTimeout;
+        this.sessionTimeout = sessionTimeout;
+        this.connectionTimeout = connectionTimeout;
     }
 
     public String getConnectionString() {
-        return connectionString;
+        return Optional.ofNullable(connectionString)
+                .map(ConnectionString::getValue)
+                .orElseThrow(ConnectionStringCannotBeEmptyException::new);
     }
 
-    public String getPathPrefix() {
+    public Path getPathPrefix() {
         return pathPrefix;
     }
 
@@ -57,11 +71,27 @@ class CuratorLeadershipProperties {
     }
 
     public Optional<Integer> getSessionTimeoutMs() {
-        return Optional.ofNullable(sessionTimeoutMs);
+        return Optional.ofNullable(sessionTimeout)
+                .map(Duration::toMillis)
+                .map(Long::intValue);
     }
 
     public Optional<Integer> getConnectionTimeoutMs() {
-        return Optional.ofNullable(connectionTimeoutMs);
+        return Optional.ofNullable(connectionTimeout)
+                .map(Duration::toMillis)
+                .map(Long::intValue);
+    }
+
+    static class ConnectionString {
+        private final String value;
+
+        ConnectionString(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 
     static class RetryPolicyProperties {
