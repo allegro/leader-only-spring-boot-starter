@@ -1,2 +1,1 @@
 rootProject.name = 'leader-example'
-includeBuild "../"

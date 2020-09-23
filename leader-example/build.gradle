@@ -19,7 +19,7 @@ dependencies {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
 
-    implementation 'com.allegro.tech:leader-only-spring-boot-starter:0.0.1-SNAPSHOT'
+    implementation 'pl.allegro.tech:leader-only-spring-boot-starter:0.0.1-SNAPSHOT'
     implementation('org.apache.zookeeper:zookeeper:3.6.1') {
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }

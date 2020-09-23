@@ -6,11 +6,11 @@ The application connects to it and checks, if can be a new leader.
 
 # How to run?
 
-Start Zookeeper. You can use a preconfigured [Docker Compose file](./docker-compose.yaml). 
-It will start Zookeeper at port `22181`.
+Start Zookeeper. You can use Docker for this purpose. Below command
+will start Zookeeper at port `22181`. 
 
 ```shell script
-docker-compose up
+docker run -d -p 22181:2181 zookeeper:3.6.1
 ```
 
 Next, start first Spring Boot application.
