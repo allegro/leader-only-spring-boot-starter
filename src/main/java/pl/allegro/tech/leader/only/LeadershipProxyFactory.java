@@ -11,7 +11,6 @@ import java.io.Closeable;
 
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 
-@SuppressWarnings("unchecked")
 class LeadershipProxyFactory {
     private final LeadershipFactory leadershipFactory;
 
@@ -21,6 +20,7 @@ class LeadershipProxyFactory {
 
     <T> T getProxy(T object, String path) {
         Leadership leadership = leadershipFactory.of(path);
+        //noinspection unchecked
         return (T) createProxy(object, leadership).getProxy();
     }
 
