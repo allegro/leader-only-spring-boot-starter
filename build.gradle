@@ -10,7 +10,7 @@ repositories {
     mavenCentral()
 }
 
-group = "com.allegro.tech"
+group = "pl.allegro.tech"
 version = "0.0.1-SNAPSHOT"
 
 dependencies {
