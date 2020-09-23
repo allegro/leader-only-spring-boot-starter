@@ -42,7 +42,9 @@ See example project [here](./leader-example).
 
 ## Configuration
 
-Zookeeper & Apache Curator are technologies that drives selecting leader.
+[Apache Zookeeper](https://zookeeper.apache.org/) & 
+[Apache Curator](https://curator.apache.org/) 
+are technologies that drives selecting leader.
 
 ```yaml
 curator-leadership:
@@ -52,19 +54,36 @@ curator-leadership:
     path-prefix: /leader-only
     retry:
       max-retries: 3
-      max-sleep-time-ms: 1000
-      base-sleep-time-ms: 200
+      max-sleep-time: 1000
+      base-sleep-time: 200
     auth:
       scheme: digest
       username: username
       password: password
 ```
 
-Dependencies that needs to be set in `build.grade`.
+### Maven
+
+```xml
+<dependencies>
+    <dependency>
+        <groupId>pl.allegro.tech</groupId>
+        <artifactId>leader-only-spring-boot-starter</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+    <dependency>
+        <groupId>org.apache.zookeeper</groupId>
+        <artifactId>zookeeper</artifactId>
+        <version>3.6.2</version>
+    </dependency>
+</dependencies>
+``` 
+
+### Gradle
 
 ```groovy
 implementation "pl.allegro.tech:leader-only-spring-boot-starter:1.0.0"
-implementation "org.apache.zookeeper:zookeeper:3.4.10" 
+implementation "org.apache.zookeeper:zookeeper:3.6.2" 
 ```
 
 ## What if you don't want to use Zookeeper?
