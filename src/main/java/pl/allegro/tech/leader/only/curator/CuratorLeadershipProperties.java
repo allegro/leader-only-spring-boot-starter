@@ -95,18 +95,35 @@ class CuratorLeadershipProperties {
     }
 
     static class RetryPolicyProperties {
-        private final Integer maxRetries;
-        private final Integer maxSleepTimeMs;
-        private final Integer baseSleepTimeMs;
+        private static final int DEFAULT_BASE_SLEEP_TIME_MS = 200;
+        private static final int DEFAULT_MAX_SLEEP_TIME_MS = 1000;
 
-        RetryPolicyProperties(Integer maxRetries, Integer maxSleepTimeMs, Integer baseSleepTimeMs) {
+        private final Integer maxRetries;
+        private final Duration maxSleepTime;
+        private final Duration baseSleepTime;
+
+        RetryPolicyProperties(Integer maxRetries, Duration maxSleepTime, Duration baseSleepTime) {
             this.maxRetries = Optional.ofNullable(maxRetries).orElse(3);
-            this.maxSleepTimeMs = Optional.ofNullable(maxSleepTimeMs).orElse(1000);
-            this.baseSleepTimeMs = Optional.ofNullable(baseSleepTimeMs).orElse(200);
+            this.maxSleepTime = maxSleepTime;
+            this.baseSleepTime = baseSleepTime;
         }
 
         public RetryPolicy getExponentialBackoffRetry() {
-            return new ExponentialBackoffRetry(baseSleepTimeMs, maxRetries, maxSleepTimeMs);
+            return new ExponentialBackoffRetry(getBaseSleepTime(), maxRetries, getMaxSleepTime());
+        }
+
+        private int getBaseSleepTime() {
+            return Optional.ofNullable(baseSleepTime)
+                    .map(Duration::toMillis)
+                    .map(Long::intValue)
+                    .orElse(DEFAULT_BASE_SLEEP_TIME_MS);
+        }
+
+        private int getMaxSleepTime() {
+            return Optional.ofNullable(maxSleepTime)
+                    .map(Duration::toMillis)
+                    .map(Long::intValue)
+                    .orElse(DEFAULT_MAX_SLEEP_TIME_MS);
         }
     }
 
