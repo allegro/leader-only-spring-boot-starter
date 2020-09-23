@@ -21,7 +21,7 @@ class CuratorLeadershipTest {
     private static final int PORT = 2181;
 
     @Container
-    public static final GenericContainer<?> zookeeper = new GenericContainer<>("zookeeper:3.4.10")
+    public static final GenericContainer<?> zookeeper = new GenericContainer<>("zookeeper:3.6.2")
             .withExposedPorts(PORT);
 
     @DynamicPropertySource

@@ -13,6 +13,11 @@ repositories {
 group = "pl.allegro.tech"
 version = "0.0.1-SNAPSHOT"
 
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+
 dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
@@ -25,17 +30,12 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    // Use JUnit Jupiter API for testing.
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
-
-    // Use JUnit Jupiter Engine for testing.
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 
-    testCompile "org.testcontainers:testcontainers:1.14.3"
-    testImplementation "org.testcontainers:junit-jupiter:1.14.3"
-    testCompile ("org.apache.zookeeper:zookeeper:3.4.10") {
-        force = true
-    }
+    testImplementation 'org.testcontainers:testcontainers:1.14.3'
+    testImplementation 'org.testcontainers:junit-jupiter:1.14.3'
+    testImplementation 'org.apache.zookeeper:zookeeper:3.6.2'
 }
 
 bootJar {
