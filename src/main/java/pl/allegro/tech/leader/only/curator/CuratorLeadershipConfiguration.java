@@ -1,5 +1,7 @@
 package pl.allegro.tech.leader.only.curator;
 
+import org.apache.curator.drivers.TracerDriver;
+import org.apache.curator.ensemble.EnsembleProvider;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
@@ -9,7 +11,11 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import pl.allegro.tech.leader.only.LeaderOnlyConfiguration;
+import pl.allegro.tech.leader.only.api.CuratorLeadershipCustomizer;
 import pl.allegro.tech.leader.only.api.LeadershipFactory;
+
+import java.util.Optional;
+import java.util.stream.Stream;
 
 import static org.apache.curator.framework.CuratorFrameworkFactory.builder;
 
@@ -19,7 +25,11 @@ import static org.apache.curator.framework.CuratorFrameworkFactory.builder;
 public class CuratorLeadershipConfiguration {
     @Bean(initMethod = "start", destroyMethod = "close")
     @ConditionalOnProperty(prefix = "curator-leadership", name = "connection-string")
-    CuratorFramework leaderOnlyCuratorClient(CuratorLeadershipProperties properties) {
+    CuratorFramework leaderOnlyCuratorClient(
+            CuratorLeadershipProperties properties,
+            Optional<Stream<CuratorLeadershipCustomizer>> optionalCuratorFrameworkCustomizerProvider,
+            Optional<EnsembleProvider> optionalEnsembleProvider,
+            Optional<TracerDriver> optionalTracerDriverProvider) {
         final CuratorFrameworkFactory.Builder builder = builder()
                 .connectString(properties.getConnectionString())
                 .retryPolicy(properties.getRetryPolicy());
@@ -33,13 +43,29 @@ public class CuratorLeadershipConfiguration {
         properties.getConnectionTimeoutMs()
                 .ifPresent(builder::connectionTimeoutMs);
 
-        return builder.build();
+        properties.getWaitForShutdownTimeoutMs()
+                .ifPresent(builder::waitForShutdownTimeoutMs);
+
+        builder.namespace(properties.getNamespace());
+
+        optionalEnsembleProvider.ifPresent(builder::ensembleProvider);
+
+        optionalCuratorFrameworkCustomizerProvider
+                .ifPresent(customizers -> customizers.forEach(it -> it.customize(builder)));
+
+        final CuratorFramework client = builder.build();
+
+        optionalTracerDriverProvider
+                .ifPresent(tracerDriver -> Optional.ofNullable(client.getZookeeperClient())
+                        .ifPresent(zookeeperClient -> zookeeperClient.setTracerDriver(tracerDriver)));
+
+        return client;
     }
 
     @Bean
     @ConditionalOnBean(name = "leaderOnlyCuratorClient")
-    LeadershipFactory curatorLeaderLatchFactory(CuratorFramework leaderOnlyCuratorClient, CuratorLeadershipProperties properties) {
-        return new CuratorLeadershipFactoryImpl(leaderOnlyCuratorClient, properties.getPathPrefix());
+    LeadershipFactory curatorLeaderLatchFactory(CuratorFramework leaderOnlyCuratorClient) {
+        return new CuratorLeadershipFactoryImpl(leaderOnlyCuratorClient);
     }
 
     @Bean

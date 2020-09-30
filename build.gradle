@@ -1,6 +1,11 @@
+import org.gradle.api.JavaVersion
+
 plugins {
     id 'java-library'
-    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'org.springframework.boot' version '2.3.4.RELEASE'
+    id 'pl.allegro.tech.build.axion-release' version '1.12.0'
+    id "com.bmuschko.nexus" version "2.3.1"
+    id 'io.codearte.nexus-staging' version '0.22.0'
 }
 
 apply plugin: 'java-library'
@@ -11,12 +16,13 @@ repositories {
 }
 
 group = "pl.allegro.tech"
-version = "0.0.1-SNAPSHOT"
+version = scmVersion.version
 
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-compileJava.options.encoding = 'UTF-8'
-compileTestJava.options.encoding = 'UTF-8'
+compileJava {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+    options.encoding = "UTF-8"
+}
 
 dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
@@ -24,8 +30,10 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-aop'
     api 'org.springframework.boot:spring-boot-autoconfigure'
     api 'org.slf4j:slf4j-api:1.7.30'
-    api 'org.apache.curator:curator-recipes:4.2.0'
-    api 'org.apache.curator:curator-framework:4.2.0'
+    api('org.apache.curator:curator-recipes:4.2.0')
+    api('org.apache.curator:curator-framework:4.2.0') {
+        exclude group: 'org.slf4j', module: 'slf4j-log4j12'
+    }
 
     testImplementation 'org.springframework.boot:spring-boot'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -33,8 +41,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.6.2'
 
-    testImplementation 'org.testcontainers:testcontainers:1.14.3'
-    testImplementation 'org.testcontainers:junit-jupiter:1.14.3'
+    testImplementation 'org.testcontainers:testcontainers:1.15.0-rc2'
+    testImplementation 'org.testcontainers:junit-jupiter:1.15.0-rc2'
     testImplementation 'org.apache.zookeeper:zookeeper:3.6.2'
 }
 
@@ -47,6 +55,45 @@ jar {
 }
 
 test {
-    // Use junit platform for unit tests
     useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat = 'full'
+    }
+}
+
+modifyPom {
+    project {
+        name 'leader-only-spring-boot-starter'
+        description 'Spring Boot starter for leader only processing'
+        url 'https://github.com/allegro/leader-only-spring-boot-starter'
+        inceptionYear '2020'
+
+        scm {
+            url 'https://github.com/allegro/leader-only-spring-boot-starter'
+            connection 'scm:git@github.com:allegro/leader-only-spring-boot-starter.git'
+            developerConnection 'scm:git@github.com:allegro/leader-only-spring-boot-starter.git'
+        }
+
+        licenses {
+            license {
+                name 'The Apache Software License, Version 2.0'
+                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+            }
+        }
+
+        developers {
+            developer {
+                id 'wpanas'
+                name 'Waldemar Panas'
+            }
+        }
+    }
+}
+
+nexusStaging {
+    packageGroup = "pl.allegro"
+
+    numberOfRetries = 50
+    delayBetweenRetriesInMillis = 5000
 }

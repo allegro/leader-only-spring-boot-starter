@@ -19,34 +19,26 @@ import static org.springframework.util.StringUtils.hasText;
 @ConfigurationProperties(prefix = "curator-leadership")
 @ConstructorBinding
 class CuratorLeadershipProperties {
-    private static final Path DEFAULT_PATH = Paths.get("/leader-only");
-    private static final Path ABSOLUTE_START = Paths.get("/");
+    private static final Path DEFAULT_NAMESPACE = Paths.get("leader-only");
 
     private final ConnectionString connectionString;
     private final RetryPolicyProperties retry;
     private final AuthProperties auth;
-    @DurationUnit(MILLIS)
-    private final Duration sessionTimeout;
-    @DurationUnit(MILLIS)
-    private final Duration connectionTimeout;
-    private final Path pathPrefix;
+    private final TimeoutProperties timeout;
+    private final Path namespace;
 
     public CuratorLeadershipProperties(
             ConnectionString connectionString,
-            Path pathPrefix,
+            Path namespace,
             RetryPolicyProperties retry,
             AuthProperties auth,
-            Duration sessionTimeout,
-            Duration connectionTimeout
-    ) {
+            TimeoutProperties timeout) {
         this.connectionString = connectionString;
-        this.pathPrefix = Optional.ofNullable(pathPrefix)
-                .map(ABSOLUTE_START::resolve)
-                .orElse(DEFAULT_PATH);
+        this.namespace = Optional.ofNullable(namespace)
+                .orElse(DEFAULT_NAMESPACE);
         this.retry = retry;
         this.auth = auth;
-        this.sessionTimeout = sessionTimeout;
-        this.connectionTimeout = connectionTimeout;
+        this.timeout = timeout;
     }
 
     public String getConnectionString() {
@@ -55,8 +47,8 @@ class CuratorLeadershipProperties {
                 .orElseThrow(ConnectionStringCannotBeEmptyException::new);
     }
 
-    public Path getPathPrefix() {
-        return pathPrefix;
+    public String getNamespace() {
+        return namespace.toString();
     }
 
     public RetryPolicy getRetryPolicy() {
@@ -71,13 +63,22 @@ class CuratorLeadershipProperties {
     }
 
     public Optional<Integer> getSessionTimeoutMs() {
-        return Optional.ofNullable(sessionTimeout)
+        return Optional.ofNullable(timeout)
+                .map(TimeoutProperties::getSession)
                 .map(Duration::toMillis)
                 .map(Long::intValue);
     }
 
     public Optional<Integer> getConnectionTimeoutMs() {
-        return Optional.ofNullable(connectionTimeout)
+        return Optional.ofNullable(timeout)
+                .map(TimeoutProperties::getConnection)
+                .map(Duration::toMillis)
+                .map(Long::intValue);
+    }
+
+    public Optional<Integer> getWaitForShutdownTimeoutMs() {
+        return Optional.ofNullable(timeout)
+                .map(TimeoutProperties::getWaitForShutdown)
                 .map(Duration::toMillis)
                 .map(Long::intValue);
     }
@@ -148,6 +149,33 @@ class CuratorLeadershipProperties {
 
         public byte[] getCredentials() {
             return (username + ":" + password).getBytes();
+        }
+    }
+
+    static class TimeoutProperties {
+        @DurationUnit(MILLIS)
+        private final Duration session;
+        @DurationUnit(MILLIS)
+        private final Duration connection;
+        @DurationUnit(MILLIS)
+        private final Duration waitForShutdown;
+
+        TimeoutProperties(Duration session, Duration connection, Duration waitForShutdown) {
+            this.session = session;
+            this.connection = connection;
+            this.waitForShutdown = waitForShutdown;
+        }
+
+        public Duration getSession() {
+            return session;
+        }
+
+        public Duration getConnection() {
+            return connection;
+        }
+
+        public Duration getWaitForShutdown() {
+            return waitForShutdown;
         }
     }
 }

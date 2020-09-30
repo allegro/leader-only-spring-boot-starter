@@ -1,66 +1,13 @@
 # Leader Only Spring Boot Starter
 
-## Why?
+Sometimes it is crucial to perform some action only on one application node. 
+This library makes this boring task easy.
 
-Sometimes it is crucial to perform some action only on one node. 
-This library makes this mundane task easy. 
+- Integrates with [Spring Boot 2](https://github.com/spring-projects/spring-boot)
+- Leverages [Apache Curator](https://curator.apache.org/)
+- Handles multiple locks at once
 
-## How to use it?
-
-There are two annotations, that allow you to select method
-that is performed only on leader node.
-
-First is `@Leader` used on whole class. It allows you to name
-leader. Each leader has its name, so you can create multiple leaders
-and each will have separate lock.
-
-Then, there is `@LeaderOnly` annotation used on method. You can have
-multiple methods inside leader with this annotation. Methods without
-`@LeaderOnly` are performed as usual.
-
-```java
-import org.springframework.stereotype.Component;
-import pl.allegro.tech.leader.only.Leader;
-import pl.allegro.tech.leader.only.LeaderOnly;
-
-@Component
-@Leader("leader-identifier")
-public class Sample {
-    
-    @LeaderOnly
-    public Integer performActionOnlyOnLeader() {
-        return veryExpensiveOperation();
-    }
-
-    public Integer performActionOnEveryNode() {
-        return somethingCheapToPerform();
-    }
-}
-``` 
-
-See example project [here](./leader-example).
-
-## Configuration
-
-[Apache Zookeeper](https://zookeeper.apache.org/) & 
-[Apache Curator](https://curator.apache.org/) 
-are technologies that drives selecting leader.
-
-```yaml
-curator-leadership:
-    connection-string: localhost:2181 # only required property
-    session-timeout: 100
-    connection-timeout: 100
-    path-prefix: /leader-only
-    retry:
-      max-retries: 3
-      max-sleep-time: 1000
-      base-sleep-time: 200
-    auth:
-      scheme: digest
-      username: username
-      password: password
-```
+## Installation
 
 ### Maven
 
@@ -82,9 +29,61 @@ curator-leadership:
 ### Gradle
 
 ```groovy
-implementation "pl.allegro.tech:leader-only-spring-boot-starter:1.0.0"
-implementation "org.apache.zookeeper:zookeeper:3.6.2" 
+dependecies {
+    implementation "pl.allegro.tech:leader-only-spring-boot-starter:1.0.0"
+    implementation "org.apache.zookeeper:zookeeper:3.6.2" 
+}
 ```
+
+## Usage
+
+```java
+import org.springframework.stereotype.Component;
+import pl.allegro.tech.leader.only.Leader;
+import pl.allegro.tech.leader.only.LeaderOnly;
+
+@Leader("leader-identifier") // creates new leader latch with identifier
+public class Sample {
+    
+    @LeaderOnly
+    public Integer performActionOnlyOnLeader() {
+        return veryExpensiveOperation(); // this will be performed only at leader node
+    }
+
+    public Integer performActionOnEveryNode() {
+        return somethingCheapToPerform(); // this will be performed at all nodes
+    }
+}
+``` 
+
+`@Leader` annotation enhances `@Component` and will add a candidate 
+for auto-detection  when using annotation-based configuration and classpath scanning.
+
+See example project [here](./leader-example).
+
+## Configuration
+
+```yaml
+curator-leadership:
+    connection-string: localhost:2181 # only required property
+    namespace: /leader-only
+    timeout:
+      session: 100ms
+      connection: 100ms
+      wait-for-shutdown: 100ms
+    retry:
+      max-retries: 3
+      max-sleep-time: 1s
+      base-sleep-time: 200ms
+    auth:
+      scheme: digest
+      username: username
+      password: password
+```
+
+[Apache Zookeeper](https://zookeeper.apache.org/) & 
+[Apache Curator](https://curator.apache.org/) 
+are technologies that drives selecting leader.
 
 ## What if you don't want to use Zookeeper?
 

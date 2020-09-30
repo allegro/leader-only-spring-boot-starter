@@ -24,7 +24,7 @@ class LeadershipProxyFactory {
         return (T) createProxy(object, leadership).getProxy();
     }
 
-    private  <T> ProxyFactory createProxy(T object, Leadership leadership) {
+    private <T> ProxyFactory createProxy(T object, Leadership leadership) {
         ProxyFactory proxyFactory = new ProxyFactory();
         proxyFactory.setTargetClass(object.getClass());
         proxyFactory.setProxyTargetClass(true);
