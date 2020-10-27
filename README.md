@@ -59,8 +59,6 @@ public class Sample {
 `@Leader` annotation enhances `@Component` and will add a candidate 
 for auto-detection  when using annotation-based configuration and classpath scanning.
 
-See example project [here](./leader-example).
-
 ## Configuration
 
 ```yaml
