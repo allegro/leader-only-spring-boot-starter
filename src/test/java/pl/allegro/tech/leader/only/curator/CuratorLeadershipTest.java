@@ -6,8 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.GenericContainer;
-import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
 import pl.allegro.tech.leader.only.fixtures.SampleApplication;
 import pl.allegro.tech.leader.only.fixtures.SampleLeaderOnlyExecutor;
@@ -15,15 +13,17 @@ import pl.allegro.tech.leader.only.fixtures.SampleLeaderOnlyExecutor;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Testcontainers
 @SpringBootTest(classes = SampleApplication.class)
 class CuratorLeadershipTest {
 
     private static final int PORT = 2181;
 
-    @Container
     public static final GenericContainer<?> zookeeper = new GenericContainer<>(DockerImageName.parse("zookeeper:3.6.2"))
             .withExposedPorts(PORT);
+
+    {
+        zookeeper.start();
+    }
 
     @DynamicPropertySource
     static void zookeeperProperties(DynamicPropertyRegistry registry) {

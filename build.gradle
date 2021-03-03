@@ -42,7 +42,6 @@ dependencies {
 
     testImplementation platform('org.testcontainers:testcontainers-bom:1.15.2')
     testImplementation 'org.testcontainers:testcontainers'
-    testImplementation 'org.testcontainers:junit-jupiter'
 
     testImplementation 'org.apache.zookeeper:zookeeper:3.6.2'
 }
