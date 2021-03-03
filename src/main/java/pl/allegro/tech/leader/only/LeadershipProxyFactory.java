@@ -18,9 +18,9 @@ class LeadershipProxyFactory {
         this.leadershipFactory = leadershipFactory;
     }
 
+    @SuppressWarnings("unchecked")
     <T> T getProxy(T object, String path) {
         Leadership leadership = leadershipFactory.of(path);
-        //noinspection unchecked
         return (T) createProxy(object, leadership).getProxy();
     }
 
