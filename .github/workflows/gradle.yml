@@ -31,8 +31,10 @@ jobs:
         key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
         restore-keys: |
           ${{ runner.os }}-gradle-
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Clear existing docker image cache
+      run: docker image prune -af
+    - name: Test with Gradle
+      run: ./gradlew --no-daemon --info --continue check
     - name: Cleanup Gradle Cache
       run: |
         rm -f ~/.gradle/caches/modules-2/modules-2.lock
