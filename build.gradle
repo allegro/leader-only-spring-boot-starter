@@ -1,13 +1,13 @@
+import java.time.Duration
+
 plugins {
     id 'java-library'
+    id 'maven-publish'
     id 'org.springframework.boot' version '2.3.9.RELEASE'
     id 'pl.allegro.tech.build.axion-release' version '1.12.1'
-    id "com.bmuschko.nexus" version "2.3.1"
-    id 'io.codearte.nexus-staging' version '0.30.0'
+    id 'io.freefair.maven-central.validate-poms' version '5.3.0'
+    id 'io.github.gradle-nexus.publish-plugin' version '1.0.0'
 }
-
-apply plugin: 'java-library'
-apply plugin: 'io.spring.dependency-management'
 
 repositories {
     mavenCentral()
@@ -63,38 +63,47 @@ test {
     }
 }
 
-modifyPom {
-    project {
-        name 'leader-only-spring-boot-starter'
-        description 'Spring Boot starter for leader only processing'
-        url 'https://github.com/allegro/leader-only-spring-boot-starter'
-        inceptionYear '2020'
-
-        scm {
-            url 'https://github.com/allegro/leader-only-spring-boot-starter'
-            connection 'scm:git@github.com:allegro/leader-only-spring-boot-starter.git'
-            developerConnection 'scm:git@github.com:allegro/leader-only-spring-boot-starter.git'
-        }
-
-        licenses {
-            license {
-                name 'The Apache Software License, Version 2.0'
-                url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-            }
-        }
-
-        developers {
-            developer {
-                id 'wpanas'
-                name 'Waldemar Panas'
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            pom {
+                name = 'leader-only-spring-boot-starter'
+                description = 'Spring Boot starter for leader only processing'
+                url = 'https://github.com/allegro/leader-only-spring-boot-starter'
+                licenses {
+                    license {
+                        name = 'The Apache License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'wpanas'
+                        name = 'Waldemar Panas'
+                        email = "waldemar.panas@allegro.pl"
+                    }
+                }
+                scm {
+                    connection = 'scm:git@github.com:allegro/leader-only-spring-boot-starter.git'
+                    developerConnection = 'scm:git@github.com:allegro/leader-only-spring-boot-starter.git'
+                    url = 'https://github.com/allegro/leader-only-spring-boot-starter'
+                }
             }
         }
     }
 }
 
-nexusStaging {
-    packageGroup = "pl.allegro"
-
-    numberOfRetries = 50
-    delayBetweenRetriesInMillis = 5000
+nexusPublishing {
+    repositories {
+        sonatype {
+            stagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID")
+            username = System.getenv("SONATYPE_USERNAME")
+            password = System.getenv("SONATYPE_PASSWORD")
+        }
+    }
+    transitionCheckOptions {
+        maxRetries.set(40)
+        delayBetween.set(Duration.ofMillis(5000))
+    }
 }
