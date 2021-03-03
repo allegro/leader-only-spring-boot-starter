@@ -2,6 +2,7 @@ package pl.allegro.tech.leader.only.curator;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
+import org.springframework.lang.NonNull;
 import pl.allegro.tech.leader.only.api.Leadership;
 import pl.allegro.tech.leader.only.api.LeadershipFactory;
 
@@ -23,7 +24,7 @@ final class CuratorLeadershipFactoryImpl implements LeadershipFactory, Closeable
     }
 
     @Override
-    public Leadership of(String path) {
+    public Leadership of(@NonNull String path) {
         final String absolutePath = Paths.get(ABSOLUTE_PATH, path).toString();
         if (!leaderships.containsKey(absolutePath)) {
             final LeaderLatch latch = new LeaderLatch(client, absolutePath);

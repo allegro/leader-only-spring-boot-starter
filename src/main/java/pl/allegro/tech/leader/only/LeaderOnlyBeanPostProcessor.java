@@ -6,7 +6,7 @@ import pl.allegro.tech.leader.only.api.Leader;
 
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 
-class LeaderOnlyBeanPostProcessor implements BeanPostProcessor {
+final class LeaderOnlyBeanPostProcessor implements BeanPostProcessor {
 
     private final LeadershipProxyFactory leadershipProxyFactory;
 

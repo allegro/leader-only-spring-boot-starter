@@ -3,6 +3,7 @@ package pl.allegro.tech.leader.only;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
+import org.springframework.lang.NonNull;
 import pl.allegro.tech.leader.only.api.LeaderOnly;
 import pl.allegro.tech.leader.only.api.Leadership;
 import pl.allegro.tech.leader.only.api.LeadershipFactory;
@@ -11,7 +12,7 @@ import java.io.Closeable;
 
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 
-class LeadershipProxyFactory {
+final class LeadershipProxyFactory {
     private final LeadershipFactory leadershipFactory;
 
     LeadershipProxyFactory(LeadershipFactory leadershipFactory) {
@@ -19,12 +20,12 @@ class LeadershipProxyFactory {
     }
 
     @SuppressWarnings("unchecked")
-    <T> T getProxy(T object, String path) {
+    <T> T getProxy(@NonNull T object, @NonNull String path) {
         Leadership leadership = leadershipFactory.of(path);
         return (T) createProxy(object, leadership).getProxy();
     }
 
-    private <T> ProxyFactory createProxy(T object, Leadership leadership) {
+    private <T> ProxyFactory createProxy(@NonNull T object, @NonNull Leadership leadership) {
         ProxyFactory proxyFactory = new ProxyFactory();
         proxyFactory.setTargetClass(object.getClass());
         proxyFactory.setProxyTargetClass(true);
@@ -34,7 +35,7 @@ class LeadershipProxyFactory {
         return proxyFactory;
     }
 
-    private static class LeaderOnlyMethodInterceptor implements MethodInterceptor {
+    private static final class LeaderOnlyMethodInterceptor implements MethodInterceptor {
         private final Leadership leadership;
 
         public LeaderOnlyMethodInterceptor(Leadership leadership) {
