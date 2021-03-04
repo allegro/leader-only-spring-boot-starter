@@ -39,12 +39,12 @@ dependecies {
 
 ```java
 import org.springframework.stereotype.Component;
-import pl.allegro.tech.leader.only.Leader;
-import pl.allegro.tech.leader.only.LeaderOnly;
+import pl.allegro.tech.boot.leader.only.Leader;
+import pl.allegro.tech.boot.leader.only.LeaderOnly;
 
 @Leader("leader-identifier") // creates new leader latch with identifier
 public class Sample {
-    
+
     @LeaderOnly
     public Integer performActionOnlyOnLeader() {
         return veryExpensiveOperation(); // this will be performed only at leader node

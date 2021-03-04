@@ -1,7 +1,7 @@
-package pl.allegro.tech.leader.only.fixtures;
+package pl.allegro.tech.boot.leader.only.fixtures;
 
-import pl.allegro.tech.leader.only.api.Leader;
-import pl.allegro.tech.leader.only.api.LeaderOnly;
+import pl.allegro.tech.boot.leader.only.api.Leader;
+import pl.allegro.tech.boot.leader.only.api.LeaderOnly;
 
 @Leader("sample")
 public class SampleLeaderOnlyExecutor {

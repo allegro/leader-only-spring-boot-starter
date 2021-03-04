@@ -1,11 +1,11 @@
-package pl.allegro.tech.leader.only.curator;
+package pl.allegro.tech.boot.leader.only.curator;
 
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
 import org.apache.curator.framework.recipes.leader.LeaderLatchListener;
 import org.slf4j.Logger;
-import pl.allegro.tech.leader.only.api.LeaderLatchCannotStartException;
-import pl.allegro.tech.leader.only.api.LeaderLatchCannotStopException;
-import pl.allegro.tech.leader.only.api.Leadership;
+import pl.allegro.tech.boot.leader.only.api.LeaderLatchCannotStartException;
+import pl.allegro.tech.boot.leader.only.api.LeaderLatchCannotStopException;
+import pl.allegro.tech.boot.leader.only.api.Leadership;
 
 import java.io.Closeable;
 import java.io.IOException;

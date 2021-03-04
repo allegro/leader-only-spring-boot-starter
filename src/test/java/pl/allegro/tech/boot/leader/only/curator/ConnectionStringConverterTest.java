@@ -1,8 +1,8 @@
-package pl.allegro.tech.leader.only.curator;
+package pl.allegro.tech.boot.leader.only.curator;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
-import pl.allegro.tech.leader.only.curator.CuratorLeadershipProperties.ConnectionString;
+import pl.allegro.tech.boot.leader.only.curator.CuratorLeadershipProperties.ConnectionString;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;

@@ -13,7 +13,7 @@ repositories {
     mavenCentral()
 }
 
-group = "pl.allegro.tech"
+group = "pl.allegro.tech.boot"
 version = scmVersion.version
 
 compileJava {

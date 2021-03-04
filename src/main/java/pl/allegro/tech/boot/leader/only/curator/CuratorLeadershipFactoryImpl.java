@@ -1,10 +1,10 @@
-package pl.allegro.tech.leader.only.curator;
+package pl.allegro.tech.boot.leader.only.curator;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
 import org.springframework.lang.NonNull;
-import pl.allegro.tech.leader.only.api.Leadership;
-import pl.allegro.tech.leader.only.api.LeadershipFactory;
+import pl.allegro.tech.boot.leader.only.api.Leadership;
+import pl.allegro.tech.boot.leader.only.api.LeadershipFactory;
 
 import java.io.Closeable;
 import java.nio.file.Paths;

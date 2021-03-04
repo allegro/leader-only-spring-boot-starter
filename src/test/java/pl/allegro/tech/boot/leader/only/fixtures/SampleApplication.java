@@ -1,4 +1,4 @@
-package pl.allegro.tech.leader.only.fixtures;
+package pl.allegro.tech.boot.leader.only.fixtures;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

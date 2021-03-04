@@ -1,12 +1,12 @@
-package pl.allegro.tech.leader.only;
+package pl.allegro.tech.boot.leader.only;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.lang.NonNull;
-import pl.allegro.tech.leader.only.api.LeaderOnly;
-import pl.allegro.tech.leader.only.api.Leadership;
-import pl.allegro.tech.leader.only.api.LeadershipFactory;
+import pl.allegro.tech.boot.leader.only.api.LeaderOnly;
+import pl.allegro.tech.boot.leader.only.api.Leadership;
+import pl.allegro.tech.boot.leader.only.api.LeadershipFactory;
 
 import java.io.Closeable;
 

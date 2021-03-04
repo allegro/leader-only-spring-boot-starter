@@ -1,4 +1,4 @@
-package pl.allegro.tech.leader.only.curator;
+package pl.allegro.tech.boot.leader.only.curator;
 
 import org.apache.curator.drivers.TracerDriver;
 import org.apache.curator.ensemble.EnsembleProvider;
@@ -10,9 +10,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.allegro.tech.leader.only.LeaderOnlyConfiguration;
-import pl.allegro.tech.leader.only.api.CuratorLeadershipCustomizer;
-import pl.allegro.tech.leader.only.api.LeadershipFactory;
+import pl.allegro.tech.boot.leader.only.LeaderOnlyConfiguration;
+import pl.allegro.tech.boot.leader.only.api.CuratorLeadershipCustomizer;
+import pl.allegro.tech.boot.leader.only.api.LeadershipFactory;
 
 import java.util.Optional;
 import java.util.stream.Stream;

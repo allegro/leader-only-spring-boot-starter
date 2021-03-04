@@ -1,9 +1,9 @@
-package pl.allegro.tech.leader.only;
+package pl.allegro.tech.boot.leader.only;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import pl.allegro.tech.leader.only.api.LeadershipFactory;
+import pl.allegro.tech.boot.leader.only.api.LeadershipFactory;
 
 @Configuration
 public class LeaderOnlyConfiguration {

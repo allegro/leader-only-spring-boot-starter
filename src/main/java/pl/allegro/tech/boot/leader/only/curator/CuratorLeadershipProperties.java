@@ -1,4 +1,4 @@
-package pl.allegro.tech.leader.only.curator;
+package pl.allegro.tech.boot.leader.only.curator;
 
 import org.apache.curator.RetryPolicy;
 import org.apache.curator.retry.ExponentialBackoffRetry;
@@ -6,7 +6,7 @@ import org.apache.curator.retry.RetryOneTime;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.boot.convert.DurationUnit;
-import pl.allegro.tech.leader.only.api.ConnectionStringCannotBeEmptyException;
+import pl.allegro.tech.boot.leader.only.api.ConnectionStringCannotBeEmptyException;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

@@ -1,4 +1,4 @@
-package pl.allegro.tech.leader.only.api;
+package pl.allegro.tech.boot.leader.only.api;
 
 public final class ConnectionStringCannotBeEmptyException extends IllegalArgumentException {
     public ConnectionStringCannotBeEmptyException() {
