@@ -16,11 +16,14 @@ final class CuratorLeadershipFactoryImpl implements LeadershipFactory, Closeable
     private final ConcurrentHashMap<String, CuratorLeadership> leaderships = new ConcurrentHashMap<>();
 
     private final CuratorFramework client;
+    private final CuratorLeadershipProperties properties;
 
     public CuratorLeadershipFactoryImpl(
-            CuratorFramework client
+            CuratorFramework client,
+            CuratorLeadershipProperties properties
     ) {
         this.client = client;
+        this.properties = properties;
     }
 
     @Override
@@ -28,7 +31,7 @@ final class CuratorLeadershipFactoryImpl implements LeadershipFactory, Closeable
         final String absolutePath = Paths.get(ABSOLUTE_PATH, path).toString();
         if (!leaderships.containsKey(absolutePath)) {
             final LeaderLatch latch = new LeaderLatch(client, absolutePath);
-            leaderships.put(absolutePath, new CuratorLeadership(latch));
+            leaderships.put(absolutePath, new CuratorLeadership(latch, properties));
         }
 
         return leaderships.get(absolutePath);

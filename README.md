@@ -77,6 +77,9 @@ curator-leadership:
       scheme: digest
       username: username
       password: password
+    selecting-leader:
+      timeout: 30s
+      check-interval: 100ms
 ```
 
 [Apache Zookeeper](https://zookeeper.apache.org/) & 

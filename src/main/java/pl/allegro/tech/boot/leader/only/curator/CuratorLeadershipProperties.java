@@ -14,6 +14,7 @@ import java.time.Duration;
 import java.util.Optional;
 
 import static java.time.temporal.ChronoUnit.MILLIS;
+import static java.time.temporal.ChronoUnit.SECONDS;
 import static org.springframework.util.StringUtils.hasText;
 
 @ConfigurationProperties(prefix = "curator-leadership")
@@ -25,6 +26,7 @@ class CuratorLeadershipProperties {
     private final RetryPolicyProperties retry;
     private final AuthProperties auth;
     private final TimeoutProperties timeout;
+    private final SelectingLeaderProperties selectingLeader;
     private final Path namespace;
 
     public CuratorLeadershipProperties(
@@ -32,13 +34,16 @@ class CuratorLeadershipProperties {
             Path namespace,
             RetryPolicyProperties retry,
             AuthProperties auth,
-            TimeoutProperties timeout) {
+            TimeoutProperties timeout,
+            SelectingLeaderProperties selectingLeader
+    ) {
         this.connectionString = connectionString;
         this.namespace = Optional.ofNullable(namespace)
                 .orElse(DEFAULT_NAMESPACE);
         this.retry = retry;
         this.auth = auth;
         this.timeout = timeout;
+        this.selectingLeader = selectingLeader;
     }
 
     public String getConnectionString() {
@@ -81,6 +86,19 @@ class CuratorLeadershipProperties {
                 .map(TimeoutProperties::getWaitForShutdown)
                 .map(Duration::toMillis)
                 .map(Long::intValue);
+    }
+
+    public Duration getSelectingLeaderTimeout() {
+        return Optional.ofNullable(selectingLeader)
+                .map(SelectingLeaderProperties::getTimeout)
+                .orElse(SelectingLeaderProperties.DEFAULT_TIMEOUT);
+    }
+
+    public long getSelectingLeaderCheckInterval() {
+        return Optional.ofNullable(selectingLeader)
+                .map(SelectingLeaderProperties::getCheckInterval)
+                .map(Duration::toMillis)
+                .orElse(SelectingLeaderProperties.DEFAULT_CHECK_INTERVAL);
     }
 
     static class ConnectionString {
@@ -176,6 +194,30 @@ class CuratorLeadershipProperties {
 
         public Duration getWaitForShutdown() {
             return waitForShutdown;
+        }
+    }
+
+    static class SelectingLeaderProperties {
+        static final Duration DEFAULT_TIMEOUT = Duration.ofSeconds(30);
+        static final long DEFAULT_CHECK_INTERVAL = 100; // millis
+
+        @DurationUnit(SECONDS)
+        private final Duration timeout;
+
+        @DurationUnit(MILLIS)
+        private final Duration checkInterval;
+
+        SelectingLeaderProperties(Duration timeout, Duration checkInterval) {
+            this.timeout = timeout;
+            this.checkInterval = checkInterval;
+        }
+
+        public Duration getTimeout() {
+            return timeout;
+        }
+
+        public Duration getCheckInterval() {
+            return checkInterval;
         }
     }
 }

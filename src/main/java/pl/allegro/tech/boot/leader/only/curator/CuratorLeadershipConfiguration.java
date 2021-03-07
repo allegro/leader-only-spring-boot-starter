@@ -64,8 +64,11 @@ public class CuratorLeadershipConfiguration {
 
     @Bean
     @ConditionalOnBean(name = "leaderOnlyCuratorClient")
-    LeadershipFactory curatorLeaderLatchFactory(CuratorFramework leaderOnlyCuratorClient) {
-        return new CuratorLeadershipFactoryImpl(leaderOnlyCuratorClient);
+    LeadershipFactory curatorLeaderLatchFactory(
+            CuratorFramework leaderOnlyCuratorClient,
+            CuratorLeadershipProperties properties
+    ) {
+        return new CuratorLeadershipFactoryImpl(leaderOnlyCuratorClient, properties);
     }
 
     @Bean

@@ -15,21 +15,24 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.slf4j.LoggerFactory.getLogger;
 
 final class CuratorLeadership implements Leadership, Closeable {
 
     private static final Logger logger = getLogger(CuratorLeadership.class);
 
-    private static final Duration MAX_WAITING_FOR_START_TIMEOUT = Duration.ofSeconds(30);
-    private static final long WAITING_STEP_MS = 100;
+    private final Duration maxWaitingForSelectingLeader;
+    private final long checkInterval;
 
     private final LeaderLatch leaderLatch;
 
     private final AtomicBoolean isLeaderLatchStarted = new AtomicBoolean(false);
 
-    public CuratorLeadership(LeaderLatch leaderLatch) {
+    public CuratorLeadership(LeaderLatch leaderLatch, CuratorLeadershipProperties properties) {
         this.leaderLatch = leaderLatch;
+        this.maxWaitingForSelectingLeader = properties.getSelectingLeaderTimeout();
+        this.checkInterval = properties.getSelectingLeaderCheckInterval();
 
         try {
             leaderLatch.start();
@@ -85,11 +88,11 @@ final class CuratorLeadership implements Leadership, Closeable {
     private void awaitStarted() throws InterruptedException {
         synchronized(this)
         {
-            long waitNanos = MAX_WAITING_FOR_START_TIMEOUT.toNanos();
+            long waitNanos = maxWaitingForSelectingLeader.toNanos();
 
             while (!isLeaderLatchStarted.get() && waitNanos > 0) {
                 long startNanos = System.nanoTime();
-                TimeUnit.MILLISECONDS.timedWait(this, WAITING_STEP_MS);
+                MILLISECONDS.timedWait(this, checkInterval);
                 long elapsed = System.nanoTime() - startNanos;
                 waitNanos -= elapsed;
             }
