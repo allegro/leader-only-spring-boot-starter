@@ -99,8 +99,8 @@ signing {
 }
 
 nexusPublishing {
-    connectTimeout = Duration.ofMinutes(10)
-    clientTimeout = Duration.ofMinutes(10)
+    connectTimeout = Duration.ofSeconds(10)
+    clientTimeout = Duration.ofSeconds(10)
 
     repositories {
         sonatype {
@@ -110,7 +110,7 @@ nexusPublishing {
         }
     }
     transitionCheckOptions {
-        maxRetries.set(40)
-        delayBetween.set(Duration.ofMillis(5000))
+        maxRetries.set(5)
+        delayBetween.set(Duration.ofSeconds(5))
     }
 }
