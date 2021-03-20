@@ -3,7 +3,6 @@ import java.time.Duration
 plugins {
     id 'java-library'
     id 'maven-publish'
-    id 'signing'
     id 'org.springframework.boot' version '2.3.9.RELEASE'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'pl.allegro.tech.build.axion-release' version '1.12.1'
@@ -29,8 +28,8 @@ dependencies {
     api 'org.springframework.boot:spring-boot-starter-aop'
     api 'org.springframework.boot:spring-boot-autoconfigure'
     api 'org.slf4j:slf4j-api:1.7.30'
-    api('org.apache.curator:curator-recipes:4.2.0')
-    api('org.apache.curator:curator-framework:4.2.0') {
+    api('org.apache.curator:curator-recipes:5.1.0')
+    api('org.apache.curator:curator-framework:5.1.0') {
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
     }
 
@@ -94,23 +93,18 @@ publishing {
     }
 }
 
-signing {
-    sign publishing.publications.mavenJava
-}
-
 nexusPublishing {
-    connectTimeout = Duration.ofSeconds(10)
-    clientTimeout = Duration.ofSeconds(10)
+    connectTimeout = Duration.ofMinutes(5)
+    clientTimeout = Duration.ofMinutes(5)
 
     repositories {
         sonatype {
-            stagingProfileId = System.getenv("SONATYPE_STAGING_PROFILE_ID")
             username = System.getenv("SONATYPE_USERNAME")
             password = System.getenv("SONATYPE_PASSWORD")
         }
     }
     transitionCheckOptions {
-        maxRetries.set(5)
+        maxRetries.set(15)
         delayBetween.set(Duration.ofSeconds(5))
     }
 }
