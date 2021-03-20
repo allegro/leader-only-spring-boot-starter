@@ -14,7 +14,7 @@ This library makes this boring task easy.
 ```xml
 <dependencies>
     <dependency>
-        <groupId>pl.allegro.tech</groupId>
+        <groupId>pl.allegro.tech.boot</groupId>
         <artifactId>leader-only-spring-boot-starter</artifactId>
         <version>1.0.0</version>
     </dependency>
