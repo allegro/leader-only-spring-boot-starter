@@ -7,6 +7,7 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'pl.allegro.tech.build.axion-release' version '1.12.1'
     id 'io.github.gradle-nexus.publish-plugin' version '1.0.0'
+    id 'signing'
 }
 
 repositories {
@@ -63,6 +64,11 @@ test {
     }
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
@@ -107,4 +113,13 @@ nexusPublishing {
         maxRetries.set(15)
         delayBetween.set(Duration.ofSeconds(5))
     }
+}
+
+signing {
+    useInMemoryPgpKeys(
+            System.getenv("GPG_KEY_ID"),
+            System.getenv("GPG_PRIVATE_KEY"),
+            System.getenv("GPG_PRIVATE_KEY_PASSWORD")
+    )
+    sign publishing.publications.mavenJava
 }
