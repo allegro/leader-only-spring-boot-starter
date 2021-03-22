@@ -63,16 +63,14 @@ final class CuratorLeadership implements Leadership, Closeable {
                 }
             }
         });
-
-        try {
-            awaitStarted();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     @Override
     public boolean hasLeadership() {
+        if (!isLeaderLatchStarted.get()) {
+            awaitStarted();
+        }
+
         return leaderLatch.hasLeadership();
     }
 
@@ -85,21 +83,25 @@ final class CuratorLeadership implements Leadership, Closeable {
         }
     }
 
-    private void awaitStarted() throws InterruptedException {
-        synchronized(this)
-        {
-            long waitNanos = maxWaitingForSelectingLeader.toNanos();
+    private void awaitStarted() {
+        try {
+            synchronized(this)
+            {
+                long waitNanos = maxWaitingForSelectingLeader.toNanos();
 
-            while (!isLeaderLatchStarted.get() && waitNanos > 0) {
-                long startNanos = System.nanoTime();
-                MILLISECONDS.timedWait(this, checkInterval);
-                long elapsed = System.nanoTime() - startNanos;
-                waitNanos -= elapsed;
-            }
+                while (!isLeaderLatchStarted.get() && waitNanos > 0) {
+                    long startNanos = System.nanoTime();
+                    MILLISECONDS.timedWait(this, checkInterval);
+                    long elapsed = System.nanoTime() - startNanos;
+                    waitNanos -= elapsed;
+                }
 
-            if (!isLeaderLatchStarted.get()) {
-                throw new LeaderLatchCannotStartException();
+                if (!isLeaderLatchStarted.get()) {
+                    throw new LeaderLatchCannotStartException();
+                }
             }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
     }
 }
