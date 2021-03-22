@@ -1,5 +1,7 @@
 # Leader Only Spring Boot Starter
 
+![Java CI with Gradle status](https://github.com/allegro/leader-only-spring-boot-starter/actions/workflows/ci.yml/badge.svg?branch=master)
+
 Sometimes it is crucial to perform some action only on one application node. 
 This library makes this boring task easy.
 
