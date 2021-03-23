@@ -12,7 +12,9 @@ import org.testcontainers.utility.DockerImageName;
 import pl.allegro.tech.boot.leader.only.fixtures.SampleApplication;
 import pl.allegro.tech.boot.leader.only.fixtures.SampleLeaderOnlyExecutor;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.function.Predicate.isEqual;
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Testcontainers
@@ -39,8 +41,6 @@ class CuratorLeadershipTest {
     void shouldRespondOnlyOnLeader() {
         assertTrue(zookeeper.isRunning());
 
-        Integer actual = underTest.calculateWhatIsTwoPlusTwo();
-
-        assertEquals(4, actual);
+        await().atMost(5, SECONDS).until(() -> underTest.calculateWhatIsTwoPlusTwo(), isEqual(4));
     }
 }
