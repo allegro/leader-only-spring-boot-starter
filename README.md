@@ -33,7 +33,7 @@ This library makes this boring task easy.
 
 ```groovy
 dependecies {
-    implementation "pl.allegro.tech:leader-only-spring-boot-starter:1.0.0"
+    implementation "pl.allegro.tech:leader-only-spring-boot-starter:1.0.1"
     implementation "org.apache.zookeeper:zookeeper:3.6.2" 
 }
 ```
