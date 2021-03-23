@@ -102,8 +102,8 @@ publishing {
 }
 
 nexusPublishing {
-    connectTimeout = Duration.ofMinutes(5)
-    clientTimeout = Duration.ofMinutes(5)
+    connectTimeout = Duration.ofMinutes(10)
+    clientTimeout = Duration.ofMinutes(10)
 
     repositories {
         sonatype {
@@ -112,8 +112,8 @@ nexusPublishing {
         }
     }
     transitionCheckOptions {
-        maxRetries.set(15)
-        delayBetween.set(Duration.ofSeconds(5))
+        maxRetries.set(30)
+        delayBetween.set(Duration.ofSeconds(45))
     }
 }
 
