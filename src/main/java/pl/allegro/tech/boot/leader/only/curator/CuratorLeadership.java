@@ -11,28 +11,20 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.time.Duration;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.slf4j.LoggerFactory.getLogger;
 
 final class CuratorLeadership implements Leadership, Closeable {
 
     private static final Logger logger = getLogger(CuratorLeadership.class);
 
-    private final Duration maxWaitingForSelectingLeader;
-    private final long checkInterval;
-
     private final LeaderLatch leaderLatch;
 
     private final AtomicBoolean isLeaderLatchStarted = new AtomicBoolean(false);
 
-    public CuratorLeadership(LeaderLatch leaderLatch, CuratorLeadershipProperties properties) {
+    public CuratorLeadership(LeaderLatch leaderLatch) {
         this.leaderLatch = leaderLatch;
-        this.maxWaitingForSelectingLeader = properties.getSelectingLeaderTimeout();
-        this.checkInterval = properties.getSelectingLeaderCheckInterval();
 
         try {
             leaderLatch.start();
@@ -52,7 +44,7 @@ final class CuratorLeadership implements Leadership, Closeable {
             @Override
             public void notLeader() {
                 isLeaderLatchStarted.set(true);
-                logger.info("{} is not selected for the leader", hostname);
+                logger.info("{} is no longer the leader", hostname);
             }
 
             private String resolveHostname() {
@@ -63,12 +55,6 @@ final class CuratorLeadership implements Leadership, Closeable {
                 }
             }
         });
-
-        try {
-            awaitStarted();
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
     }
 
     @Override
@@ -82,24 +68,6 @@ final class CuratorLeadership implements Leadership, Closeable {
             leaderLatch.close();
         } catch (IOException e) {
             throw new LeaderLatchCannotStopException(e);
-        }
-    }
-
-    private void awaitStarted() throws InterruptedException {
-        synchronized(this)
-        {
-            long waitNanos = maxWaitingForSelectingLeader.toNanos();
-
-            while (!isLeaderLatchStarted.get() && waitNanos > 0) {
-                long startNanos = System.nanoTime();
-                MILLISECONDS.timedWait(this, checkInterval);
-                long elapsed = System.nanoTime() - startNanos;
-                waitNanos -= elapsed;
-            }
-
-            if (!isLeaderLatchStarted.get()) {
-                throw new LeaderLatchCannotStartException();
-            }
         }
     }
 }

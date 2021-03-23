@@ -41,6 +41,8 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
 
+    testImplementation 'org.awaitility:awaitility:4.0.3'
+
     testImplementation platform('org.testcontainers:testcontainers-bom:1.15.2')
     testImplementation 'org.testcontainers:testcontainers'
     testImplementation 'org.testcontainers:junit-jupiter'
