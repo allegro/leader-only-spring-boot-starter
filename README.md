@@ -19,7 +19,7 @@ This library makes this boring task easy.
     <dependency>
         <groupId>pl.allegro.tech.boot</groupId>
         <artifactId>leader-only-spring-boot-starter</artifactId>
-        <version>1.0.0</version>
+        <version>1.0.1</version>
     </dependency>
     <dependency>
         <groupId>org.apache.zookeeper</groupId>
