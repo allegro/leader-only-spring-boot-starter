@@ -43,7 +43,7 @@ dependencies {
 
     testImplementation 'org.awaitility:awaitility:4.0.3'
 
-    testImplementation platform('org.testcontainers:testcontainers-bom:1.15.2')
+    testImplementation platform('org.testcontainers:testcontainers-bom:1.16.2')
     testImplementation 'org.testcontainers:testcontainers'
     testImplementation 'org.testcontainers:junit-jupiter'
 
