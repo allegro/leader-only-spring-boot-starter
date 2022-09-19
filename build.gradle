@@ -28,7 +28,7 @@ dependencies {
 
     api 'org.springframework.boot:spring-boot-starter-aop'
     api 'org.springframework.boot:spring-boot-autoconfigure'
-    api 'org.slf4j:slf4j-api:1.7.30'
+    api 'org.slf4j:slf4j-api:2.0.1'
     api('org.apache.curator:curator-recipes:5.1.0')
     api('org.apache.curator:curator-framework:5.1.0') {
         exclude group: 'org.slf4j', module: 'slf4j-log4j12'
