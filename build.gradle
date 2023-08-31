@@ -17,12 +17,6 @@ repositories {
 group = 'pl.allegro.tech.boot'
 version = scmVersion.version
 
-compileJava {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-    options.encoding = 'UTF-8'
-}
-
 dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
@@ -67,6 +61,9 @@ test {
 }
 
 java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(8)
+    }
     withJavadocJar()
     withSourcesJar()
 }
