@@ -62,32 +62,38 @@ tasks.test {
 }
 
 publishing {
-    afterEvaluate {
-        publications {
-            withType<MavenPublication> {
-                pom {
-                    name = "leader-only-spring-boot-starter"
-                    description = "Spring Boot starter for leader only processing"
-                    url = "https://github.com/allegro/leader-only-spring-boot-starter"
-                    licenses {
-                        license {
-                            name = "The Apache License, Version 2.0"
-                            url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
-                        }
-                    }
-                    developers {
-                        developer {
-                            id = "wpanas"
-                            name = "Waldemar Panas"
-                        }
-                    }
-                    scm {
-                        connection = "scm:git@github.com:allegro/leader-only-spring-boot-starter.git"
-                        developerConnection = "scm:git@github.com:allegro/leader-only-spring-boot-starter.git"
-                        url = "https://github.com/allegro/leader-only-spring-boot-starter"
+    publications {
+        create<MavenPublication>("sonatype") {
+            from(components["java"])
+            pom {
+                name = "leader-only-spring-boot-starter"
+                description = "Spring Boot starter for leader only processing"
+                url = "https://github.com/allegro/leader-only-spring-boot-starter"
+                licenses {
+                    license {
+                        name = "The Apache License, Version 2.0"
+                        url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
                     }
                 }
+                developers {
+                    developer {
+                        id = "wpanas"
+                        name = "Waldemar Panas"
+                    }
+                }
+                scm {
+                    connection = "scm:git@github.com:allegro/leader-only-spring-boot-starter.git"
+                    developerConnection = "scm:git@github.com:allegro/leader-only-spring-boot-starter.git"
+                    url = "https://github.com/allegro/leader-only-spring-boot-starter"
+                }
             }
+        }
+    }
+    repositories {
+        maven {
+            val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
+            val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
+            url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
         }
     }
 }
