@@ -1,12 +1,12 @@
 # Leader Only Spring Boot Starter
 
-![Java CI with Gradle status](https://github.com/allegro/leader-only-spring-boot-starter/actions/workflows/ci.yml/badge.svg?branch=master)
+[![Java CI with Gradle](https://github.com/allegro/leader-only-spring-boot-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/allegro/leader-only-spring-boot-starter/actions/workflows/ci.yml)
 ![Maven Central](https://img.shields.io/maven-central/v/pl.allegro.tech.boot/leader-only-spring-boot-starter)
 
 Sometimes it is crucial to perform some action only on one application node. 
 This library makes this boring task easy.
 
-- Integrates with [Spring Boot 2](https://github.com/spring-projects/spring-boot)
+- Integrates with [Spring Boot 3](https://github.com/spring-projects/spring-boot)
 - Leverages [Apache Curator](https://curator.apache.org/)
 - Handles multiple locks at once
 
@@ -19,12 +19,12 @@ This library makes this boring task easy.
     <dependency>
         <groupId>pl.allegro.tech.boot</groupId>
         <artifactId>leader-only-spring-boot-starter</artifactId>
-        <version>1.0.1</version>
+        <version>1.1.0</version>
     </dependency>
     <dependency>
         <groupId>org.apache.zookeeper</groupId>
         <artifactId>zookeeper</artifactId>
-        <version>3.6.2</version>
+        <version>3.9.0</version>
     </dependency>
 </dependencies>
 ``` 
@@ -33,8 +33,8 @@ This library makes this boring task easy.
 
 ```groovy
 dependecies {
-    implementation "pl.allegro.tech:leader-only-spring-boot-starter:1.0.1"
-    implementation "org.apache.zookeeper:zookeeper:3.6.2" 
+    implementation "pl.allegro.tech:leader-only-spring-boot-starter:1.1.0"
+    implementation "org.apache.zookeeper:zookeeper:3.9.0" 
 }
 ```
 
