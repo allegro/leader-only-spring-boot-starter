@@ -4,7 +4,6 @@ import org.apache.curator.RetryPolicy;
 import org.apache.curator.retry.ExponentialBackoffRetry;
 import org.apache.curator.retry.RetryOneTime;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.context.properties.ConstructorBinding;
 import org.springframework.boot.convert.DurationUnit;
 import pl.allegro.tech.boot.leader.only.api.ConnectionStringCannotBeEmptyException;
 
@@ -17,7 +16,6 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 import static org.springframework.util.StringUtils.hasText;
 
 @ConfigurationProperties(prefix = "curator-leadership")
-@ConstructorBinding
 class CuratorLeadershipProperties {
     private static final Path DEFAULT_NAMESPACE = Paths.get("leader-only");
 

@@ -4,6 +4,7 @@ import org.apache.curator.drivers.TracerDriver;
 import org.apache.curator.ensemble.EnsembleProvider;
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.CuratorFrameworkFactory;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -19,7 +20,10 @@ import java.util.stream.Stream;
 
 import static org.apache.curator.framework.CuratorFrameworkFactory.builder;
 
-@Configuration
+/**
+ * Configuration for Curator based leadership.
+ */
+@AutoConfiguration
 @AutoConfigureBefore(LeaderOnlyConfiguration.class)
 @EnableConfigurationProperties(CuratorLeadershipProperties.class)
 public class CuratorLeadershipConfiguration {
