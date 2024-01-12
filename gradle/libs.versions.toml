@@ -3,7 +3,7 @@ curator = "5.5.0"
 junit = "5.10.0"
 testcontainers = "1.19.3"
 awaitility = "4.2.0"
-zookeeper = "3.9.0"
+zookeeper = "3.9.1"
 
 [libraries]
 curator-recipes = { module = "org.apache.curator:curator-recipes", version.ref = "curator" }
