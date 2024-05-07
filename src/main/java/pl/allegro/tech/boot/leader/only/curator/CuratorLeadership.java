@@ -11,6 +11,10 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -19,6 +23,9 @@ final class CuratorLeadership implements Leadership, Closeable {
     private static final Logger logger = getLogger(CuratorLeadership.class);
 
     private final LeaderLatch leaderLatch;
+    private final List<Runnable> leadershipAcquisitionCallbacks = new ArrayList<>();
+    private final List<Runnable> leadershipLossCallbacks = new ArrayList<>();
+    private final ExecutorService callbacksExecutor = Executors.newSingleThreadExecutor();
 
     public CuratorLeadership(LeaderLatch leaderLatch) {
         this.leaderLatch = leaderLatch;
@@ -35,11 +42,17 @@ final class CuratorLeadership implements Leadership, Closeable {
             @Override
             public void isLeader() {
                 logger.info("{} is selected for the leader", hostname);
+                leadershipAcquisitionCallbacks.forEach(callbacksExecutor::submit);
+                logger.info("{} {} leadership acquisition callbacks executed",
+                        hostname, leadershipAcquisitionCallbacks.size());
             }
 
             @Override
             public void notLeader() {
                 logger.info("{} is no longer the leader", hostname);
+                leadershipLossCallbacks.forEach(callbacksExecutor::submit);
+                logger.info("{} {} leadership loss callbacks executed",
+                        hostname, leadershipLossCallbacks.size());
             }
 
             private String resolveHostname() {
@@ -55,6 +68,16 @@ final class CuratorLeadership implements Leadership, Closeable {
     @Override
     public boolean hasLeadership() {
         return leaderLatch.hasLeadership();
+    }
+
+    @Override
+    public void registerLeadershipAcquisitionCallback(Runnable callback) {
+        leadershipAcquisitionCallbacks.add(callback);
+    }
+
+    @Override
+    public void registerLeadershipLossCallback(Runnable callback) {
+        leadershipLossCallbacks.add(callback);
     }
 
     @Override
