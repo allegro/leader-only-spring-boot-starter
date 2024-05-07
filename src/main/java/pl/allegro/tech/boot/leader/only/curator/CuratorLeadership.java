@@ -27,7 +27,7 @@ final class CuratorLeadership implements Leadership, Closeable {
     private final List<Runnable> leadershipLossCallbacks = new ArrayList<>();
     private final ExecutorService callbacksExecutor = Executors.newSingleThreadExecutor();
 
-    public CuratorLeadership(LeaderLatch leaderLatch) {
+    public CuratorLeadership(String leaderLatchPath, LeaderLatch leaderLatch) {
         this.leaderLatch = leaderLatch;
 
         try {
@@ -41,18 +41,18 @@ final class CuratorLeadership implements Leadership, Closeable {
 
             @Override
             public void isLeader() {
-                logger.info("{} is selected for the leader", hostname);
+                logger.info("{} is selected for the leader of {}", hostname, leaderLatchPath);
                 leadershipAcquisitionCallbacks.forEach(callbacksExecutor::submit);
-                logger.info("{} {} leadership acquisition callbacks executed",
-                        hostname, leadershipAcquisitionCallbacks.size());
+                logger.info("executed {} callback(s) on leadership acquisition of {} on {}",
+                        leadershipAcquisitionCallbacks.size(), leaderLatchPath, hostname);
             }
 
             @Override
             public void notLeader() {
-                logger.info("{} is no longer the leader", hostname);
+                logger.info("{} is no longer the leader of {}", hostname, leaderLatchPath);
                 leadershipLossCallbacks.forEach(callbacksExecutor::submit);
-                logger.info("{} {} leadership loss callbacks executed",
-                        hostname, leadershipLossCallbacks.size());
+                logger.info("executed {} callback(s) on leadership loss of {} on {}",
+                        leadershipLossCallbacks.size(), leaderLatchPath, hostname);
             }
 
             private String resolveHostname() {
