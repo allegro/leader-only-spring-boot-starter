@@ -15,6 +15,7 @@ import pl.allegro.tech.boot.leader.only.fixtures.SampleLeaderOnlyExecutor;
 import static java.util.concurrent.TimeUnit.SECONDS;
 import static java.util.function.Predicate.isEqual;
 import static org.awaitility.Awaitility.await;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Testcontainers
@@ -42,5 +43,7 @@ class CuratorLeadershipTest {
         assertTrue(zookeeper.isRunning());
 
         await().atMost(5, SECONDS).until(() -> underTest.calculateWhatIsTwoPlusTwo(), isEqual(4));
+
+        assertEquals(1, underTest.getLeadershipAcquisitionCounter());
     }
 }
