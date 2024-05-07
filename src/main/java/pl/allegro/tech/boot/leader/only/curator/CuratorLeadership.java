@@ -21,8 +21,6 @@ final class CuratorLeadership implements Leadership, Closeable {
 
     private final LeaderLatch leaderLatch;
 
-    private final AtomicBoolean isLeaderLatchStarted = new AtomicBoolean(false);
-
     public CuratorLeadership(LeaderLatch leaderLatch) {
         this.leaderLatch = leaderLatch;
 
@@ -37,13 +35,11 @@ final class CuratorLeadership implements Leadership, Closeable {
 
             @Override
             public void isLeader() {
-                isLeaderLatchStarted.set(true);
                 logger.info("{} is selected for the leader", hostname);
             }
 
             @Override
             public void notLeader() {
-                isLeaderLatchStarted.set(true);
                 logger.info("{} is no longer the leader", hostname);
             }
 
