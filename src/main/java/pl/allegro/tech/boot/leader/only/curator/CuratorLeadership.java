@@ -11,7 +11,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -20,8 +19,6 @@ final class CuratorLeadership implements Leadership, Closeable {
     private static final Logger logger = getLogger(CuratorLeadership.class);
 
     private final LeaderLatch leaderLatch;
-
-    private final AtomicBoolean isLeaderLatchStarted = new AtomicBoolean(false);
 
     public CuratorLeadership(LeaderLatch leaderLatch) {
         this.leaderLatch = leaderLatch;
@@ -37,13 +34,11 @@ final class CuratorLeadership implements Leadership, Closeable {
 
             @Override
             public void isLeader() {
-                isLeaderLatchStarted.set(true);
                 logger.info("{} is selected for the leader", hostname);
             }
 
             @Override
             public void notLeader() {
-                isLeaderLatchStarted.set(true);
                 logger.info("{} is no longer the leader", hostname);
             }
 
