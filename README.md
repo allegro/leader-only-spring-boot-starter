@@ -89,4 +89,4 @@ are technologies that drives selecting leader.
 ## What if you don't want to use Zookeeper?
 
 You can make your own `Leadership` implementation and add your `LeadershipFactory` bean to Spring context.
-If you want to know more, check out this [example](src/test/java/pl/allegro/tech/leader/only/api/LeaderOnlyTest.java).
+If you want to know more, check out this [example](src/test/java/pl/allegro/tech/boot/leader/only/api/LeaderOnlyTest.java).
