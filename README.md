@@ -53,6 +53,16 @@ public class Sample {
         return veryExpensiveOperation(); // this will be performed only at leader node
     }
 
+    @OnLeadershipAcquisition
+    void leadershipAcquisitionCallback() {
+        leadershipSetUp(); // this will be performed when node becomes a leader
+    }
+
+    @OnLeadershipLoss
+    void leadershipLossCallback() {
+        leadershipCleanUp();  // this will be performed when node stops being a leader
+    }
+
     public Integer performActionOnEveryNode() {
         return somethingCheapToPerform(); // this will be performed at all nodes
     }
