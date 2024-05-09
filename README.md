@@ -41,8 +41,8 @@ dependecies {
 ## Usage
 
 ```java
-import pl.allegro.tech.boot.leader.only.Leader;
-import pl.allegro.tech.boot.leader.only.LeaderOnly;
+import pl.allegro.tech.boot.leader.only.api.Leader;
+import pl.allegro.tech.boot.leader.only.api.LeaderOnly;
 
 @Leader("leader-identifier") // creates new leader latch with identifier
 public class Sample {
@@ -61,12 +61,12 @@ public class Sample {
 `@Leader` annotation enhances `@Component` and will add a candidate 
 for auto-detection  when using annotation-based configuration and classpath scanning.
 
-It is also possible to handle leadership status changes. To do so bean annotated with @Leader has to
-implement LeadershipChangeCallbacks interface.
+It is also possible to handle leadership status changes. To do so, bean annotated with `@Leader` has to
+implement `LeadershipChangeCallbacks` interface.
 
 ```java
-import pl.allegro.tech.boot.leader.only.Leader;
-import pl.allegro.tech.boot.leader.only.LeaderOnly;
+import pl.allegro.tech.boot.leader.only.api.Leader;
+import pl.allegro.tech.boot.leader.only.api.LeaderOnly;
 import pl.allegro.tech.boot.leader.only.api.LeadershipChangeCallbacks;
 
 @Leader("leader-identifier") // creates new leader latch with identifier
