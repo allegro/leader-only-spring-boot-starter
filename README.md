@@ -41,7 +41,6 @@ dependecies {
 ## Usage
 
 ```java
-import org.springframework.stereotype.Component;
 import pl.allegro.tech.boot.leader.only.Leader;
 import pl.allegro.tech.boot.leader.only.LeaderOnly;
 
@@ -61,6 +60,36 @@ public class Sample {
 
 `@Leader` annotation enhances `@Component` and will add a candidate 
 for auto-detection  when using annotation-based configuration and classpath scanning.
+
+It is also possible to handle leadership status changes. To do so bean annotated with @Leader has to
+implement LeadershipChangeCallbacks interface.
+
+```java
+import pl.allegro.tech.boot.leader.only.Leader;
+import pl.allegro.tech.boot.leader.only.LeaderOnly;
+import pl.allegro.tech.boot.leader.only.api.LeadershipChangeCallbacks;
+
+@Leader("leader-identifier") // creates new leader latch with identifier
+public class Sample implements LeadershipChangeCallbacks {
+
+    @LeaderOnly
+    public Integer performActionOnlyOnLeader() {
+        return veryExpensiveOperation(); // this will be performed only at leader node
+    }
+
+    public void onLeadershipAcquisition() {
+        leadershipSetUp(); // this will be performed when node becomes a leader
+    }
+
+    public void onLeadershipLoss() {
+        leadershipCleanUp();  // this will be performed when node stops being a leader
+    }
+
+    public Integer performActionOnEveryNode() {
+        return somethingCheapToPerform(); // this will be performed at all nodes
+    }
+}
+```
 
 ## Configuration
 
@@ -89,4 +118,4 @@ are technologies that drives selecting leader.
 ## What if you don't want to use Zookeeper?
 
 You can make your own `Leadership` implementation and add your `LeadershipFactory` bean to Spring context.
-If you want to know more, check out this [example](src/test/java/pl/allegro/tech/leader/only/api/LeaderOnlyTest.java).
+If you want to know more, check out this [example](src/test/java/pl/allegro/tech/boot/leader/only/api/LeaderOnlyTest.java).

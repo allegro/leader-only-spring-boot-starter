@@ -11,7 +11,10 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -20,10 +23,11 @@ final class CuratorLeadership implements Leadership, Closeable {
     private static final Logger logger = getLogger(CuratorLeadership.class);
 
     private final LeaderLatch leaderLatch;
+    private final List<Runnable> leadershipAcquisitionCallbacks = new ArrayList<>();
+    private final List<Runnable> leadershipLossCallbacks = new ArrayList<>();
+    private final ExecutorService callbacksExecutor = Executors.newSingleThreadExecutor();
 
-    private final AtomicBoolean isLeaderLatchStarted = new AtomicBoolean(false);
-
-    public CuratorLeadership(LeaderLatch leaderLatch) {
+    public CuratorLeadership(String leaderLatchPath, LeaderLatch leaderLatch) {
         this.leaderLatch = leaderLatch;
 
         try {
@@ -37,14 +41,18 @@ final class CuratorLeadership implements Leadership, Closeable {
 
             @Override
             public void isLeader() {
-                isLeaderLatchStarted.set(true);
-                logger.info("{} is selected for the leader", hostname);
+                logger.info("{} is selected for the leader of {}", hostname, leaderLatchPath);
+                leadershipAcquisitionCallbacks.forEach(callbacksExecutor::submit);
+                logger.info("executed {} callback(s) on leadership acquisition of {} on {}",
+                        leadershipAcquisitionCallbacks.size(), leaderLatchPath, hostname);
             }
 
             @Override
             public void notLeader() {
-                isLeaderLatchStarted.set(true);
-                logger.info("{} is no longer the leader", hostname);
+                logger.info("{} is no longer the leader of {}", hostname, leaderLatchPath);
+                leadershipLossCallbacks.forEach(callbacksExecutor::submit);
+                logger.info("executed {} callback(s) on leadership loss of {} on {}",
+                        leadershipLossCallbacks.size(), leaderLatchPath, hostname);
             }
 
             private String resolveHostname() {
@@ -60,6 +68,16 @@ final class CuratorLeadership implements Leadership, Closeable {
     @Override
     public boolean hasLeadership() {
         return leaderLatch.hasLeadership();
+    }
+
+    @Override
+    public void registerLeadershipAcquisitionCallback(Runnable callback) {
+        leadershipAcquisitionCallbacks.add(callback);
+    }
+
+    @Override
+    public void registerLeadershipLossCallback(Runnable callback) {
+        leadershipLossCallbacks.add(callback);
     }
 
     @Override

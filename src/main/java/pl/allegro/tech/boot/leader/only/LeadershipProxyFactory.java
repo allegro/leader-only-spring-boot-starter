@@ -2,17 +2,23 @@ package pl.allegro.tech.boot.leader.only;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.slf4j.Logger;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.lang.NonNull;
 import pl.allegro.tech.boot.leader.only.api.LeaderOnly;
 import pl.allegro.tech.boot.leader.only.api.Leadership;
+import pl.allegro.tech.boot.leader.only.api.LeadershipAcquisitionCallback;
 import pl.allegro.tech.boot.leader.only.api.LeadershipFactory;
+import pl.allegro.tech.boot.leader.only.api.LeadershipLossCallback;
 
 import java.io.Closeable;
 
+import static org.slf4j.LoggerFactory.getLogger;
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 
 final class LeadershipProxyFactory {
+    private static final Logger logger = getLogger(LeadershipProxyFactory.class);
+
     private final LeadershipFactory leadershipFactory;
 
     LeadershipProxyFactory(LeadershipFactory leadershipFactory) {
@@ -22,7 +28,22 @@ final class LeadershipProxyFactory {
     @SuppressWarnings("unchecked")
     <T> T getProxy(@NonNull T object, @NonNull String path) {
         Leadership leadership = leadershipFactory.of(path);
+        initializeCallbacks(object, leadership);
         return (T) createProxy(object, leadership).getProxy();
+    }
+
+    private <T> void initializeCallbacks(@NonNull T object, @NonNull Leadership leadership) {
+        String canonicalName = object.getClass().getCanonicalName();
+        if (object instanceof LeadershipAcquisitionCallback) {
+            leadership.registerLeadershipAcquisitionCallback(() ->
+                    ((LeadershipAcquisitionCallback)object).onLeadershipAcquisition());
+            logger.info("{} registered as leadership acquisition callback", canonicalName);
+        }
+        if (object instanceof LeadershipLossCallback) {
+            leadership.registerLeadershipLossCallback(() ->
+                    ((LeadershipLossCallback)object).onLeadershipLoss());
+            logger.info("{} registered as leadership loss callback", canonicalName);
+        }
     }
 
     private <T> ProxyFactory createProxy(@NonNull T object, @NonNull Leadership leadership) {

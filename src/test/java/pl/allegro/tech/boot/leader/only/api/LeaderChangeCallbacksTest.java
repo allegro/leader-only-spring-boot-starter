@@ -1,8 +1,7 @@
 package pl.allegro.tech.boot.leader.only.api;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
@@ -12,43 +11,55 @@ import pl.allegro.tech.boot.leader.only.fixtures.SampleApplication;
 import pl.allegro.tech.boot.leader.only.fixtures.SampleLeaderOnlyExecutor;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 
 @SpringBootTest(classes = SampleApplication.class)
-@Import(LeaderOnlyTest.TestLeaderConfiguration.class)
-class LeaderOnlyTest {
+@Import(LeaderChangeCallbacksTest.TestLeaderConfiguration.class)
+class LeaderChangeCallbacksTest {
 
     private static final TestLeadership TEST_LEADERSHIP = new TestLeadership();
 
     @Autowired
     SampleLeaderOnlyExecutor underTest;
 
+    @AfterEach
+    public void cleanUp() {
+        underTest.resetCounters();
+    }
+
     @Test
-    void shouldRunOnlyOnLeaderIfMethodHasLeaderOnlyAnnotation() {
+    void shouldExecuteLeadershipAcquisitionCallbackWhenSetAsLeader() {
         TEST_LEADERSHIP.setLeadership(true);
 
-        Integer actual = underTest.calculateWhatIsTwoPlusTwo();
+        int actual = underTest.getLeadershipAcquisitionCounter();
 
-        assertEquals(4, actual);
+        assertEquals(1, actual);
     }
 
     @Test
-    void shouldNotRunOnNotLeaderIfMethodHasLeaderOnlyAnnotation() {
-        TEST_LEADERSHIP.setLeadership(false);
+    void shouldNotExecuteLeadershipLossCallbackWhenSetAsLeader() {
+        TEST_LEADERSHIP.setLeadership(true);
 
-        Integer actual = underTest.calculateWhatIsTwoPlusTwo();
+        int actual = underTest.getLeadershipLossCounter();
 
-        assertNull(actual);
+        assertEquals(0, actual);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = {true, false})
-    void shouldRunRegardlessOfLeadershipIfMethodHasNoLeaderOnlyAnnotation(boolean leadership) {
-        TEST_LEADERSHIP.setLeadership(leadership);
+    @Test
+    void shouldExecuteLeadershipLossCallbackWhenSetAsNotLeader() {
+        TEST_LEADERSHIP.setLeadership(false);
 
-        Integer actual = underTest.calculateWhatIsOnePlusTwo();
+        int actual = underTest.getLeadershipLossCounter();
 
-        assertEquals(3, actual);
+        assertEquals(1, actual);
+    }
+
+    @Test
+    void shouldNotExecuteLeadershipAcquisitionCallbackWhenSetAsNotLeader() {
+        TEST_LEADERSHIP.setLeadership(false);
+
+        int actual = underTest.getLeadershipAcquisitionCounter();
+
+        assertEquals(0, actual);
     }
 
     @TestConfiguration

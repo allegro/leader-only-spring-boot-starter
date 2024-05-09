@@ -25,8 +25,8 @@ final class CuratorLeadershipFactoryImpl implements LeadershipFactory, Closeable
     public Leadership of(@NonNull String path) {
         final String absolutePath = Paths.get(ABSOLUTE_PATH, path).toString();
         if (!leaderships.containsKey(absolutePath)) {
-            final LeaderLatch latch = new LeaderLatch(client, absolutePath);
-            leaderships.put(absolutePath, new CuratorLeadership(latch));
+            final LeaderLatch latch = new LeaderLatch(client, absolutePath, "", LeaderLatch.CloseMode.NOTIFY_LEADER);
+            leaderships.put(absolutePath, new CuratorLeadership(absolutePath, latch));
         }
 
         return leaderships.get(absolutePath);
