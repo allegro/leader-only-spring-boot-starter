@@ -17,7 +17,7 @@ zookeeper = { module = "org.apache.zookeeper:zookeeper", version.ref = "zookeepe
 curator = ["curator-recipes", "curator-framework"]
 
 [plugins]
-springBoot = { id = "org.springframework.boot", version = "3.2.5" }
+springBoot = { id = "org.springframework.boot", version = "3.3.2" }
 springDependencyManagement = { id = "io.spring.dependency-management", version = "1.1.5" }
 axionRelease = { id = "pl.allegro.tech.build.axion-release", version = "1.18.3" }
 nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
