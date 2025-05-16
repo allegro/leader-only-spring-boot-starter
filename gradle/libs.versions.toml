@@ -18,6 +18,6 @@ curator = ["curator-recipes", "curator-framework"]
 
 [plugins]
 springBoot = { id = "org.springframework.boot", version = "3.4.4" }
-springDependencyManagement = { id = "io.spring.dependency-management", version = "1.1.5" }
+springDependencyManagement = { id = "io.spring.dependency-management", version = "1.1.7" }
 axionRelease = { id = "pl.allegro.tech.build.axion-release", version = "1.18.3" }
 nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
