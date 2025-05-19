@@ -2,7 +2,7 @@
 curator = "5.7.0"
 junit = "5.12.2"
 testcontainers = "1.20.1"
-awaitility = "4.2.1"
+awaitility = "4.3.0"
 zookeeper = "3.9.2"
 
 [libraries]
