@@ -1,6 +1,6 @@
 [versions]
 curator = "5.9.0"
-junit = "5.12.2"
+junit = "5.13.4"
 testcontainers = "1.21.3"
 awaitility = "4.2.1"
 zookeeper = "3.9.3"
