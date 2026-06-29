@@ -4,6 +4,7 @@ testcontainers = "2.0.5"
 awaitility = "4.3.0"
 zookeeper = "3.9.5"
 spring-boot = "4.1.0"
+nexus-publish = "2.0.0"
 
 [libraries]
 curator-recipes = { module = "org.apache.curator:curator-recipes", version.ref = "curator" }
@@ -22,4 +23,4 @@ testcontainers = ["testcontainers", "testcontainers-jupiter"]
 springBoot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 springDependencyManagement = { id = "io.spring.dependency-management", version = "1.1.7" }
 axionRelease = { id = "pl.allegro.tech.build.axion-release", version = "1.21.2" }
-nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
+nexus-publish = { id = "io.github.gradle-nexus.publish-plugin", version.ref = "nexus-publish" }

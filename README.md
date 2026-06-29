@@ -19,7 +19,7 @@ This library makes this boring task easy.
     <dependency>
         <groupId>pl.allegro.tech.boot</groupId>
         <artifactId>leader-only-spring-boot-starter</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.1</version>
     </dependency>
     <dependency>
         <groupId>org.apache.zookeeper</groupId>
@@ -33,7 +33,7 @@ This library makes this boring task easy.
 
 ```groovy
 dependecies {
-    implementation "pl.allegro.tech:leader-only-spring-boot-starter:2.0.0"
+    implementation "pl.allegro.tech:leader-only-spring-boot-starter:2.0.1"
     implementation "org.apache.zookeeper:zookeeper:3.9.5"
 }
 ```
