@@ -6,7 +6,7 @@
 Sometimes it is crucial to perform some action only on one application node. 
 This library makes this boring task easy.
 
-- Integrates with [Spring Boot 3](https://github.com/spring-projects/spring-boot)
+- Integrates with [Spring Boot 4.1](https://github.com/spring-projects/spring-boot)
 - Leverages [Apache Curator](https://curator.apache.org/)
 - Handles multiple locks at once
 
@@ -19,12 +19,12 @@ This library makes this boring task easy.
     <dependency>
         <groupId>pl.allegro.tech.boot</groupId>
         <artifactId>leader-only-spring-boot-starter</artifactId>
-        <version>1.1.0</version>
+        <version>2.0.0</version>
     </dependency>
     <dependency>
         <groupId>org.apache.zookeeper</groupId>
         <artifactId>zookeeper</artifactId>
-        <version>3.9.0</version>
+        <version>3.9.5</version>
     </dependency>
 </dependencies>
 ``` 
@@ -33,8 +33,8 @@ This library makes this boring task easy.
 
 ```groovy
 dependecies {
-    implementation "pl.allegro.tech:leader-only-spring-boot-starter:1.1.0"
-    implementation "org.apache.zookeeper:zookeeper:3.9.0" 
+    implementation "pl.allegro.tech:leader-only-spring-boot-starter:2.0.0"
+    implementation "org.apache.zookeeper:zookeeper:3.9.5"
 }
 ```
 
