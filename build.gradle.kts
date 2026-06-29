@@ -87,13 +87,6 @@ publishing {
             }
         }
     }
-    repositories {
-        maven {
-            val releasesRepoUrl = uri("https://oss.sonatype.org/service/local/staging/deploy/maven2/")
-            val snapshotsRepoUrl = uri("https://oss.sonatype.org/content/repositories/snapshots/")
-            url = if (version.toString().endsWith("SNAPSHOT")) snapshotsRepoUrl else releasesRepoUrl
-        }
-    }
 }
 
 nexusPublishing {
@@ -114,6 +107,6 @@ signing {
 
     if (gpgKeyId != null && gpgPrivateKey != null && gpgPrivateKeyPassword != null) {
         useInMemoryPgpKeys(gpgKeyId, gpgPrivateKey, gpgPrivateKeyPassword)
-        sign(publishing.publications["library"])
+        sign(publishing.publications["sonatype"])
     }
 }
