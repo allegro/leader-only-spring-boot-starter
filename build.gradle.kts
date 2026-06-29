@@ -1,5 +1,4 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
-import java.time.Duration
 
 plugins {
     `java-library`
@@ -7,7 +6,7 @@ plugins {
     alias(libs.plugins.springBoot)
     alias(libs.plugins.springDependencyManagement)
     alias(libs.plugins.axionRelease)
-    alias(libs.plugins.nexusPublish)
+    alias(libs.plugins.nexus.publish)
     signing
 }
 
@@ -98,27 +97,23 @@ publishing {
 }
 
 nexusPublishing {
-    connectTimeout = Duration.ofMinutes(10)
-    clientTimeout = Duration.ofMinutes(10)
     repositories {
         sonatype {
-            username.set(System.getenv("SONATYPE_USERNAME"))
-            password.set(System.getenv("SONATYPE_PASSWORD"))
+            nexusUrl = uri("https://ossrh-staging-api.central.sonatype.com/service/local/")
+            snapshotRepositoryUrl = uri("https://central.sonatype.com/repository/maven-snapshots/")
+            username = System.getenv("SONATYPE_USERNAME")
+            password = System.getenv("SONATYPE_PASSWORD")
         }
-    }
-    transitionCheckOptions {
-        maxRetries.set(30)
-        delayBetween.set(Duration.ofSeconds(45))
     }
 }
 
-if (System.getenv("GPG_KEY_ID") != null) {
-    signing {
-        useInMemoryPgpKeys(
-            System.getenv("GPG_KEY_ID"),
-            System.getenv("GPG_PRIVATE_KEY"),
-            System.getenv("GPG_PRIVATE_KEY_PASSWORD")
-        )
-        sign(publishing.publications)
+signing {
+    val gpgKeyId = System.getenv("GPG_KEY_ID")
+    val gpgPrivateKey = System.getenv("GPG_PRIVATE_KEY")
+    val gpgPrivateKeyPassword = System.getenv("GPG_PRIVATE_KEY_PASSWORD")
+
+    if (gpgKeyId != null && gpgPrivateKey != null && gpgPrivateKeyPassword != null) {
+        useInMemoryPgpKeys(gpgKeyId, gpgPrivateKey, gpgPrivateKeyPassword)
+        sign(publishing.publications["library"])
     }
 }
