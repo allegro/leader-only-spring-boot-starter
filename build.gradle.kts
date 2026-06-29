@@ -29,17 +29,16 @@ java {
 dependencies {
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 
-    api("org.springframework.boot:spring-boot-starter-aop")
+    api("org.springframework.boot:spring-boot-starter-aspectj")
     api("org.springframework.boot:spring-boot-autoconfigure")
     api(libs.bundles.curator)
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 
-    testImplementation(platform(libs.testcontainers))
+    testImplementation(platform(libs.testcontainers.bom))
     testImplementation("org.springframework.boot:spring-boot")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("org.testcontainers:testcontainers")
-    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation(libs.bundles.testcontainers)
     testImplementation("org.junit.jupiter:junit-jupiter-api")
     testImplementation(libs.awaitility)
     testImplementation(libs.zookeeper)
