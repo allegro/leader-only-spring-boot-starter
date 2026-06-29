@@ -21,5 +21,5 @@ testcontainers = ["testcontainers", "testcontainers-jupiter"]
 [plugins]
 springBoot = { id = "org.springframework.boot", version.ref = "spring-boot" }
 springDependencyManagement = { id = "io.spring.dependency-management", version = "1.1.7" }
-axionRelease = { id = "pl.allegro.tech.build.axion-release", version = "1.19.0" }
+axionRelease = { id = "pl.allegro.tech.build.axion-release", version = "1.21.2" }
 nexusPublish = { id = "io.github.gradle-nexus.publish-plugin", version = "2.0.0" }
