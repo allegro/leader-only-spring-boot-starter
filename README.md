@@ -3,10 +3,10 @@
 [![Java CI with Gradle](https://github.com/allegro/leader-only-spring-boot-starter/actions/workflows/ci.yml/badge.svg)](https://github.com/allegro/leader-only-spring-boot-starter/actions/workflows/ci.yml)
 ![Maven Central](https://img.shields.io/maven-central/v/pl.allegro.tech.boot/leader-only-spring-boot-starter)
 
-Sometimes it is crucial to perform some action only on one application node. 
+Sometimes it is crucial to perform some action only on one application node.
 This library makes this boring task easy.
 
-- Integrates with [Spring Boot 3](https://github.com/spring-projects/spring-boot)
+- Integrates with [Spring Boot 4.1](https://github.com/spring-projects/spring-boot)
 - Leverages [Apache Curator](https://curator.apache.org/)
 - Handles multiple locks at once
 
@@ -19,12 +19,12 @@ This library makes this boring task easy.
     <dependency>
         <groupId>pl.allegro.tech.boot</groupId>
         <artifactId>leader-only-spring-boot-starter</artifactId>
-        <version>1.1.0</version>
+        <version>2.0.0</version>
     </dependency>
     <dependency>
         <groupId>org.apache.zookeeper</groupId>
         <artifactId>zookeeper</artifactId>
-        <version>3.9.0</version>
+        <version>3.9.5</version>
     </dependency>
 </dependencies>
 ``` 
@@ -33,8 +33,8 @@ This library makes this boring task easy.
 
 ```groovy
 dependecies {
-    implementation "pl.allegro.tech:leader-only-spring-boot-starter:1.1.0"
-    implementation "org.apache.zookeeper:zookeeper:3.9.0" 
+    implementation "pl.allegro.tech:leader-only-spring-boot-starter:2.0.0"
+    implementation "org.apache.zookeeper:zookeeper:3.9.5"
 }
 ```
 
@@ -58,7 +58,7 @@ public class Sample {
 }
 ``` 
 
-`@Leader` annotation enhances `@Component` and will add a candidate 
+`@Leader` annotation enhances `@Component` and will add a candidate
 for auto-detection  when using annotation-based configuration and classpath scanning.
 
 It is also possible to handle leadership status changes. To do so, bean annotated with `@Leader` has to
@@ -95,24 +95,24 @@ public class Sample implements LeadershipChangeCallbacks {
 
 ```yaml
 curator-leadership:
-    connection-string: localhost:2181 # only required property
-    namespace: /leader-only
-    timeout:
-      session: 100ms
-      connection: 100ms
-      wait-for-shutdown: 100ms
-    retry:
-      max-retries: 3
-      max-sleep-time: 1s
-      base-sleep-time: 200ms
-    auth:
-      scheme: digest
-      username: username
-      password: password
+  connection-string: localhost:2181 # only required property
+  namespace: /leader-only
+  timeout:
+    session: 100ms
+    connection: 100ms
+    wait-for-shutdown: 100ms
+  retry:
+    max-retries: 3
+    max-sleep-time: 1s
+    base-sleep-time: 200ms
+  auth:
+    scheme: digest
+    username: username
+    password: password
 ```
 
-[Apache Zookeeper](https://zookeeper.apache.org/) & 
-[Apache Curator](https://curator.apache.org/) 
+[Apache Zookeeper](https://zookeeper.apache.org/) &
+[Apache Curator](https://curator.apache.org/)
 are technologies that drives selecting leader.
 
 ## What if you don't want to use Zookeeper?
