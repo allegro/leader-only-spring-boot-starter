@@ -1,16 +1,17 @@
 package pl.allegro.tech.boot.leader.only;
 
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.lang.Nullable;
+import org.jspecify.annotations.Nullable;
 import pl.allegro.tech.boot.leader.only.api.Leader;
 
 import static org.springframework.core.annotation.AnnotationUtils.findAnnotation;
 
 final class LeaderOnlyBeanPostProcessor implements BeanPostProcessor {
 
-    private final LeadershipProxyFactory leadershipProxyFactory;
+    private final ObjectProvider<LeadershipProxyFactory> leadershipProxyFactory;
 
-    public LeaderOnlyBeanPostProcessor(LeadershipProxyFactory leadershipProxyFactory) {
+    public LeaderOnlyBeanPostProcessor(ObjectProvider<LeadershipProxyFactory> leadershipProxyFactory) {
         this.leadershipProxyFactory = leadershipProxyFactory;
     }
 
@@ -22,6 +23,6 @@ final class LeaderOnlyBeanPostProcessor implements BeanPostProcessor {
             return bean;
         }
 
-        return leadershipProxyFactory.getProxy(bean, annotation.value());
+        return leadershipProxyFactory.getObject().getProxy(bean, annotation.value());
     }
 }

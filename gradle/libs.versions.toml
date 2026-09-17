@@ -7,13 +7,21 @@ spring-boot = "4.1.1"
 nexus-publish = "2.0.0"
 
 [libraries]
-curator-recipes = { module = "org.apache.curator:curator-recipes", version.ref = "curator" }
-curator-framework = { module = "org.apache.curator:curator-framework", version.ref = "curator" }
 awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility" }
+curator-framework = { module = "org.apache.curator:curator-framework", version.ref = "curator" }
+curator-recipes = { module = "org.apache.curator:curator-recipes", version.ref = "curator" }
+jspecify = { module = "org.jspecify:jspecify" }
+junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api" }
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine" }
+spring-boot = { module = "org.springframework.boot:spring-boot" }
+spring-boot-autoconfigure = { module = "org.springframework.boot:spring-boot-autoconfigure" }
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
+spring-boot-starter-aspectj = { module = "org.springframework.boot:spring-boot-starter-aspectj" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
 testcontainers-bom = { module = "org.testcontainers:testcontainers-bom", version.ref = "testcontainers" }
-zookeeper = { module = "org.apache.zookeeper:zookeeper", version.ref = "zookeeper" }
 testcontainers = { module = "org.testcontainers:testcontainers" }
 testcontainers-jupiter = { module = "org.testcontainers:testcontainers-junit-jupiter" }
+zookeeper = { module = "org.apache.zookeeper:zookeeper", version.ref = "zookeeper" }
 
 [bundles]
 curator = ["curator-recipes", "curator-framework"]

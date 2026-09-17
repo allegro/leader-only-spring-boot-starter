@@ -2,9 +2,9 @@ package pl.allegro.tech.boot.leader.only;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.jspecify.annotations.NonNull;
 import org.slf4j.Logger;
 import org.springframework.aop.framework.ProxyFactory;
-import org.springframework.lang.NonNull;
 import pl.allegro.tech.boot.leader.only.api.LeaderOnly;
 import pl.allegro.tech.boot.leader.only.api.Leadership;
 import pl.allegro.tech.boot.leader.only.api.LeadershipAcquisitionCallback;
@@ -36,12 +36,12 @@ final class LeadershipProxyFactory {
         String canonicalName = object.getClass().getCanonicalName();
         if (object instanceof LeadershipAcquisitionCallback) {
             leadership.registerLeadershipAcquisitionCallback(() ->
-                    ((LeadershipAcquisitionCallback)object).onLeadershipAcquisition());
+                    ((LeadershipAcquisitionCallback) object).onLeadershipAcquisition());
             logger.info("{} registered as leadership acquisition callback", canonicalName);
         }
         if (object instanceof LeadershipLossCallback) {
             leadership.registerLeadershipLossCallback(() ->
-                    ((LeadershipLossCallback)object).onLeadershipLoss());
+                    ((LeadershipLossCallback) object).onLeadershipLoss());
             logger.info("{} registered as leadership loss callback", canonicalName);
         }
     }

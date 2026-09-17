@@ -2,7 +2,7 @@ package pl.allegro.tech.boot.leader.only.curator;
 
 import org.apache.curator.framework.CuratorFramework;
 import org.apache.curator.framework.recipes.leader.LeaderLatch;
-import org.springframework.lang.NonNull;
+import org.jspecify.annotations.NonNull;
 import pl.allegro.tech.boot.leader.only.api.Leadership;
 import pl.allegro.tech.boot.leader.only.api.LeadershipFactory;
 
